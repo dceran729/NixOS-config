@@ -1,25 +1,37 @@
 {
-  description = "Main Config";
+  description = "Moja wlasna konfiguracja NixOS";
 
-  # 1. WEJŚCIA (Inputs) - tu mówisz Nixowi, skąd brać programy
   inputs = {
-    # Używamy gałęzi unstable, bo jest najlepsza dla Hyprlanda i nowych sterowników
+    # Używamy wersji unstable, bo Hyprland/Niri tam działają najlepiej
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # Pobieramy Home Managera i każemy mu używać tych samych pakietów co system
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  # 2. WYJŚCIA (Outputs) - tu definiujesz, co ma powstać z tego Flake'a
-  outputs = { self, nixpkgs, ... }@inputs: {
-    # 'DCNIX' musi być identyczne z Twoim 'networking.hostName' w pliku default.nix
-    nixosConfigurations.DCNIX = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux"; 
-      
-      # Przekazujemy 'inputs' do środka systemu, żeby inne pliki mogły z nich korzystać
-      specialArgs = { inherit inputs; }; 
+  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+    nixosConfigurations = {
+      # Nazwa Twojego hosta to "laptop"
+        DCNIX = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; }; # Przekazujemy "inputs" dalej do modułów
+        modules = [
+          # 1. Ładujemy główny plik Twojego laptopa
+          ./hosts/laptop/default.nix
 
-      modules = [
-        # To jest ścieżka do Twojego głównego pliku konfiguracyjnego
-        ./hosts/laptop/default.nix
-      ];
+          # 2. Dodajemy Home Managera jako moduł systemu
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            # 3. Wskazujemy główny plik konfiguracji Home Managera
+            home-manager.users.damian2120 = import ./home/default.nix;
+          }
+        ];
+      };
     };
   };
 }
