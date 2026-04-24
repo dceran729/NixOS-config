@@ -5,7 +5,7 @@ let
   SDDM-Theme = pkgs.stdenv.mkDerivation {
     name = "SDDM-Theme";
     # Zauważ ścieżkę: cofamy się dwa foldery w górę (do roota) i wchodzimy w assets
-    src = ../../assets/themes/SDDM-Theme; 
+    src = ../assets/SDDM-Theme;
     installPhase = ''
       mkdir -p $out/share/sddm/themes/SDDM-Theme
       cp -r ./* $out/share/sddm/themes/SDDM-Theme/

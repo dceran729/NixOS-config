@@ -3,7 +3,7 @@
 let
   Grub-Theme = pkgs.stdenv.mkDerivation {
     name = "Grub-Theme";
-    src = ../../assets/themes/Grub-Theme; 
+    src = ../assets/Grub-Theme;
     
     installPhase = ''
       # Tworzymy główny folder w Nix Store
