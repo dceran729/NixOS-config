@@ -11,7 +11,7 @@
     kdePackages.kate
     discord
     vscode
-    neofetch
+    fastfetch
 
   ];
 }
