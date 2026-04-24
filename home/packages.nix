@@ -8,5 +8,10 @@
     gh
     micro
     tree
+    kate
+    discord
+    vscode
+    neofetch
+
   ];
 }
