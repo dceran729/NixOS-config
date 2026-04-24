@@ -6,11 +6,12 @@ imports = [
   ./grub.nix
   ./audio.nix
   ./keyboard.nix
-  ./location.nix
+  ./locale.nix
   ./network.nix
   ./packages.nix
   ./users.nix
   ./wayland.nix
   ./system.nix
+  ./fonts.nix
   ];
 }
