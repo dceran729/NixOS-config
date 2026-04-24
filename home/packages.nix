@@ -8,7 +8,7 @@
     gh
     micro
     tree
-    kate
+    kdePackages.kate
     discord
     vscode
     neofetch
