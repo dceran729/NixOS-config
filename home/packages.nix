@@ -3,7 +3,7 @@
 {
   programs.firefox.enable=true;
 
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     git
     gh
     micro
