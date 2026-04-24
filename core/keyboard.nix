@@ -2,7 +2,7 @@
 
 {
   console.keyMap = "pl2"; # klawiatura w konsoli TTY
-  vservices.xserver.xkb = {
+  services.xserver.xkb = {
       layout = "pl";
       variant = "";
     };
