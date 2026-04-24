@@ -15,5 +15,7 @@
     fastfetch
     distrobox
     kitty
+    alacritty
+    fuzzel
   ];
 }
