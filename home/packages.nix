@@ -17,5 +17,6 @@
     kitty
     alacritty
     fuzzel
+    hyprlauncher
   ];
 }

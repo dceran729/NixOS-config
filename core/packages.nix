@@ -9,7 +9,13 @@
   };
 
   environment.systemPackages = with pkgs; [
+    #SDDM-Theme
     kdePackages.qtdeclarative
     kdePackages.qtsvg
+
+    #Hyprland-dependancies
+    brightnessctl
+    playerctl
+    wireplumber
   ];
 }

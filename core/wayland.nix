@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  programs.hyprland.enable = true;
-  programs.niri.enable = true;
+  programs.hyprland = {
+  enable = true;
+  withUWSM = false;
+  };
 }
