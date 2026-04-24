@@ -1,1 +1,0 @@
-Prywatna konfiguracja systemu NixOS
