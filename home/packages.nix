@@ -14,5 +14,6 @@
     vscode
     fastfetch
     distrobox
+    kitty
   ];
 }
