@@ -17,5 +17,8 @@
     brightnessctl
     playerctl
     wireplumber
+
+    #waybar stuff
+    waybar
   ];
 }
