@@ -19,8 +19,8 @@ configuration {
 * {
     /* Resolution : 1920x1080 */
     box-spacing:                 50px;
-    box-margin:                  370px 350px;
-    message-margin:              0px 350px;
+    box-margin:                  370px 600px;
+    message-margin:              0px 100px;
     inputbar-spacing:            0px;
     list-spacing:                50px;
     general-padding:             20px;
@@ -37,7 +37,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  true;
-    width:                       1366px;
+    width:                       1920px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -132,7 +132,7 @@ error-message {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     5;
+    columns:                     3;
     lines:                       1;
     cycle:                       true;
     dynamic:                     true;
@@ -171,7 +171,7 @@ element-text {
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
-    vertical-align:              0.5;
+    vertical-align:              0.0;
     horizontal-align:            0.5;
 }
 element selected.normal {

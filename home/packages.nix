@@ -18,5 +18,9 @@
     alacritty
     fuzzel
     hyprlauncher
+    rofi
+    hyprlock
+    procps
+    playerctl
   ];
 }

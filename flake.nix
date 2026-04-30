@@ -29,6 +29,7 @@
             home-manager.useUserPackages = true;
             # 3. Wskazujemy główny plik konfiguracji Home Managera
             home-manager.users.damian2120 = import ./home/default.nix;
+            home-manager.backupFileExtension = "backup";
           }
         ];
       };

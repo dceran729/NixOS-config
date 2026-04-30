@@ -5,14 +5,14 @@
   imports = [
     ./packages.nix
     ./rofi.nix
+    ./waybar.nix
     # Poniższe linie są zakomentowane. Odkomentuj je (usuń #),
     # gdy będziesz gotowy na wczytanie konfiguracji tych środowisk:
     # ./hyprland
     # ./niri
   ];
 
-
-
+  fonts.fontconfig.enable = true;
 
   home.username = "damian2120";
   home.homeDirectory = "/home/damian2120";
