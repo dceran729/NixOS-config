@@ -23,4 +23,7 @@ in
     # 2. Podajemy NAZWĘ folderu z motywem, a nie całą ścieżkę (/nix/store/...)
     theme = "SDDM-Theme";
   };
+
+  #services.fprintd.enable = true;
+  #security.pam.services.sddm.fprintAuth = true;
 }

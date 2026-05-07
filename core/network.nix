@@ -2,7 +2,7 @@
 
 {
   networking.hostName = "DCNIX";
-  networking.networkmanager.enable = true;
+  #networking.networkmanager.enable = true;
   # To musi trafić do konfiguracji systemowej (NixOS), NIE do Home Managera
   networking.wireless.iwd.enable = true;
 

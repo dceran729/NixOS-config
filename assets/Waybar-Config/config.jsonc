@@ -45,8 +45,7 @@
 
   "custom/nixos": {
     "format": "",
-    "on-click": "kate ~/NixOS-config/",
-    "tooltip-format": "App Launcher"
+    "on-click": "kate ~/NixOS-config/"
   },
 
   "mpris": {

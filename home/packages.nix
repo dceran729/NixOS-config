@@ -22,5 +22,6 @@
     hyprlock
     procps
     playerctl
+    wev
   ];
 }

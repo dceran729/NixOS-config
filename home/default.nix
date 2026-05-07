@@ -6,6 +6,9 @@
     ./packages.nix
     ./rofi.nix
     ./waybar.nix
+    ./hyprland.nix
+    ./ghostty.nix
+    ./thunar.nix
     # Poniższe linie są zakomentowane. Odkomentuj je (usuń #),
     # gdy będziesz gotowy na wczytanie konfiguracji tych środowisk:
     # ./hyprland
