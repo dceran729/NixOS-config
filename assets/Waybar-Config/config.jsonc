@@ -3,7 +3,7 @@
   "layer": "top",
   "position": "top",
   "spacing": 0,
-  "height": 39,
+  "height": 32,
   "modules-left": [
     "custom/nixos",
     "hyprland/workspaces",
@@ -45,7 +45,8 @@
 
   "custom/nixos": {
     "format": "",
-    "on-click": "kate ~/NixOS-config/"
+    "on-click": "kate ~/NixOS-config/",
+    "tooltip": false
   },
 
   "mpris": {
@@ -148,7 +149,7 @@
   "group/tray-expander": {
     "orientation": "inherit",
     "drawer": {
-      "transition-duration": 500,
+      "transition-duration": 300,
       "children-class": "tray-group-item"
     },
     "modules": ["custom/expand-icon", "tray"]

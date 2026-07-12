@@ -12,5 +12,13 @@
     lxappearance             # Proste narzędzie do wybierania motywów GTK
   ];
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
+
   xdg.configFile."Thunar".source = ../assets/Thunar-Config;
 }

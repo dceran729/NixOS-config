@@ -6,23 +6,23 @@ border: none;
 border-radius: 0;
 min-height: 0;
 font-family: 'JetBrainsMono Nerd Font', sans-serif;
-font-size: 18px; /* Powiększone z 12px */
+font-size: 16px; /* Powiększone z 12px */
 }
 
 .modules-left {
-  margin-left: 12px;
+  margin-left: 8px;
 }
 
 .modules-right {
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 #workspaces button {
 all: initial;
 color: #ffffff;
-padding: 0 9px;
+padding: 0 6px;
 margin: 0 2px;
-min-width: 14px;
+min-width: 10px;
 }
 
 #workspaces button.empty {
@@ -38,30 +38,30 @@ font-weight: bold;
 #pulseaudio,
 #custom-nixos,
 #mpris {
-min-width: 18px;
-margin: 0 11px;
+min-width: 12px;
+margin: 0 7px;
 }
 
 #tray {
-margin-right: 24px;
+margin-right: 16px;
 }
 
 #bluetooth {
-margin-right: 25px;
+margin-right: 16px;
 }
 
 #network {
-margin-right: 20px;
+margin-right: 14px;
 }
 
 #custom-expand-icon {
-margin-right: 27px;
+margin-right: 17px;
 }
 
 tooltip {
   background-color: #000000;
   border: 2px solid #333333;
-  padding: 6px; /* Lekko powiększony padding */
+  padding: 4px; /* Lekko powiększony padding */
 }
 
 tooltip label {
@@ -69,7 +69,7 @@ tooltip label {
 }
 
 #clock {
-margin-left: 13px;
+/*margin-left: 13px;*/
 }
 
 .hidden {

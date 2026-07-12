@@ -2,9 +2,11 @@
  *
  * Author : Aditya Shakya (adi1090x)
  * Github : @adi1090x
- * 
+ *
  * Rofi Theme File
  * Rofi Version: 1.7.3
+ *
+ * Adapted for Fractional Scaling (1.2 / 1.5) by Gemini
  **/
 
 /*****----- Configuration -----*****/
@@ -13,35 +15,33 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-@import                          "shared/colors.rasi"
-@import                          "shared/fonts.rasi"
+@import                           "shared/colors.rasi"
+@import                           "shared/fonts.rasi"
 
 * {
-    /* Resolution : 1920x1080 */
-    box-spacing:                 50px;
-    box-margin:                  370px 600px;
-    message-margin:              0px 100px;
+    /* Przejście na % sprawia, że układ automatycznie dopasuje się do logicznej rozdzielczości 1600x900 */
+    box-spacing:                 30px;
+    box-margin:                  32% 30%;      /* Marginesy góra/dół i lewo/prawo w procentach */
+    message-margin:              0px 5%;
     inputbar-spacing:            0px;
-    list-spacing:                50px;
-    general-padding:             20px;
-    element-padding:             55px 10px;
+    list-spacing:                30px;
+    general-padding:             15px;
+    element-padding:             35px 10px;    /* Zmniejszone, by ikony nie były gigantyczne */
     element-radius:              20px;
     general-radius:              100%;
-    element-font:                "feather 48";
+    element-font:                "feather 36"; /* Czcionka dostosowana do mniejszej przestrzeni roboczej */
 }
 
 /*****----- Main Window -----*****/
 window {
-    /* properties for window widget */
     transparency:                "real";
     location:                    center;
     anchor:                      center;
     fullscreen:                  true;
-    width:                       1920px;
+    width:                       100%;        /* Zmienione z 1920px na dynamiczne 100% */
     x-offset:                    0px;
     y-offset:                    0px;
 
-    /* properties for all widgets */
     enabled:                     true;
     margin:                      0px;
     padding:                     0px;
@@ -141,7 +141,7 @@ listview {
     reverse:                     false;
     fixed-height:                true;
     fixed-columns:               true;
-    
+
     spacing:                     var(list-spacing);
     margin:                      0px;
     padding:                     0px;
@@ -171,7 +171,7 @@ element-text {
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
-    vertical-align:              0.0;
+    vertical-align:              0.5;          /* Wyśrodkowanie ikony w pionie */
     horizontal-align:            0.5;
 }
 element selected.normal {

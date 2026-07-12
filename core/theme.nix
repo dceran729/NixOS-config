@@ -1,31 +1,17 @@
 { pkgs, ... }:
 
 {
-  # Włączamy Stylixa
   stylix.enable = true;
 
-  # Stylix WYMAGA podania ścieżki do tapety (możesz dać tam cokolwiek, np. z Twojego katalogu assets)
-  stylix.image = ../assets/Hyprland-Config/twoja_tapeta.jpg;
+  stylix.image = ../assets/Wallpapers/a_woman_sitting_on_a_couch_looking_out_a_window.png;
+  stylix.polarity = "dark";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark-dark.yaml";
 
-  # Wybieramy jeden główny motyw z paczki base16-schemes (np. bardzo popularny catppuccin)
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-
-  # To rozwiąże problem białego Thunara i brzydkich ikon
   stylix.cursor = {
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
     size = 24;
   };
 
-  # Możesz też zdefiniować fonty dla całego systemu w jednym miejscu
-  stylix.fonts = {
-    monospace = {
-      package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
-      name = "JetBrainsMono Nerd Font";
-    };
-    sansSerif = {
-      package = pkgs.dejavu_fonts;
-      name = "DejaVu Sans";
-    };
-  };
+  stylix.targets.grub.enable = false;
 }

@@ -4,7 +4,6 @@ let
   # Przygotowujemy nasz lokalny motyw
   SDDM-Theme = pkgs.stdenv.mkDerivation {
     name = "SDDM-Theme";
-    # Ścieżka jest poprawna (krok w tył do roota i wejście w assets)
     src = ../assets/SDDM-Theme;
 
     installPhase = ''
@@ -14,16 +13,21 @@ let
   };
 in
 {
-  # 1. Dodajemy motyw do pakietów systemowych, żeby SDDM go "widział"
+  # Dodajemy motyw do pakietów systemowych
   environment.systemPackages = [ SDDM-Theme ];
 
-  # Odpalamy SDDM i podpinamy motyw
   services.displayManager.sddm = {
     enable = true;
-    # 2. Podajemy NAZWĘ folderu z motywem, a nie całą ścieżkę (/nix/store/...)
     theme = "SDDM-Theme";
-  };
 
-  #services.fprintd.enable = true;
-  #security.pam.services.sddm.fprintAuth = true;
+    # WYŁĄCZAMY Waylanda dla samego ekranu logowania.
+    # To zapobiega crashom i zrzucaniu do TTY po wylogowaniu z Hyprlanda.
+    wayland.enable = false;
+
+    # Biblioteki Qt niezbędne do poprawnego renderowania Twojego motywu QML
+    extraPackages = with pkgs.kdePackages; [
+      qtsvg        # Obsługa ikon i grafik SVG w motywie
+      qt5compat    # Kompatybilność wsteczna dla elementów QML
+    ];
+  };
 }

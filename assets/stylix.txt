@@ -1,0 +1,12 @@
+https://nix-community.github.io/stylix/configuration.html
+
+
+
+atelier forest
+ayu dark
+da one black
+eldrith
+framer
+onedark dark
+standardized-dark
+tokyodark

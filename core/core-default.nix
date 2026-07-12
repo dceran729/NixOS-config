@@ -13,5 +13,7 @@ imports = [
   ./wayland.nix
   ./system.nix
   ./fonts.nix
+  ./theme.nix
+  ./thunar.nix
   ];
 }

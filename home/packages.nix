@@ -1,8 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  programs.firefox.enable=true;
-  programs.firefox.configPath = ".mozilla/firefox";
+  programs.firefox = {
+    enable = true;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
+    profiles.damian2120 = {
+      id = 0;
+      isDefault = true;
+    };
+  };
 
   home.packages = with pkgs; [
     git
@@ -23,5 +29,7 @@
     procps
     playerctl
     wev
+    lxqt.lxqt-policykit
+    nix-output-monitor
   ];
 }

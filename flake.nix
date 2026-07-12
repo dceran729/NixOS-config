@@ -10,24 +10,26 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # 1. DODAJEMY INPUT STYLIXA
+    stylix.url = "github:danth/stylix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  # 2. PRZEKAZUJEMY STYLIXA DO OUTPUTS
+  outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs: {
     nixosConfigurations = {
       # Nazwa Twojego hosta to "laptop"
-        DCNIX = nixpkgs.lib.nixosSystem {
+      DCNIX = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; }; # Przekazujemy "inputs" dalej do modułów
         modules = [
-          # 1. Ładujemy główny plik Twojego laptopa
           ./hosts/laptop/default.nix
-
-          # 2. Dodajemy Home Managera jako moduł systemu
+          stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # 3. Wskazujemy główny plik konfiguracji Home Managera
+            # Wskazujemy główny plik konfiguracji Home Managera
             home-manager.users.damian2120 = import ./home/default.nix;
             home-manager.backupFileExtension = "backup";
           }

@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # 1. Importujemy Twoje rozbite pliki konfiguracyjne z folderu home
   imports = [
     ./packages.nix
     ./rofi.nix
@@ -9,11 +8,10 @@
     ./hyprland.nix
     ./ghostty.nix
     ./thunar.nix
-    # Poniższe linie są zakomentowane. Odkomentuj je (usuń #),
-    # gdy będziesz gotowy na wczytanie konfiguracji tych środowisk:
-    # ./hyprland
-    # ./niri
+    ./theme.nix
   ];
+
+  programs.bash.enable = true;
 
   fonts.fontconfig.enable = true;
 
@@ -23,4 +21,12 @@
   home.stateVersion = "25.11";
 
   programs.home-manager.enable = true;
+
+  home.shellAliases = {
+    r = "cd ~/NixOS-config && git add . && sudo nixos-rebuild switch --flake . && cd ~";
+
+    # Możesz tu od razu dodać inne przydatne skróty, na przykład:
+    # update = "cd ~/NixOS-config && nix flake update && git add . && sudo nixos-rebuild switch --flake .";
+    # ll = "ls -la";
+  };
 }
