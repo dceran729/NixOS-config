@@ -12,42 +12,44 @@
     nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
 
+  # Przeniosłem terminale z "paczki" na "moduł", żeby StyliX mógł je pokolorować!
+  programs.alacritty.enable = true;
+  programs.kitty.enable = true;
+
   home.packages = with pkgs; [
+    # --- Narzędzia terminalowe i Nixowe ---
     git
     gh
     micro
     tree
-    kdePackages.kate
-    vscode
     fastfetch
-    distrobox
-    kitty
-    alacritty
-    fuzzel
-    hyprlauncher
-    hyprlock
     procps
-    playerctl
-    wev
-    lxqt.lxqt-policykit
-    gthumb
-    firefoxpwa
-    vesktop
-    zed-editor-fhs
+    distrobox
     nix-search-cli
+    nil
+    nixd
+    nix-tree
+
+    # --- Aplikacje GUI (Programy użytkowe) ---
+    vscode
+    zed-editor-fhs
+    obsidian
+    vesktop
     bitwarden-desktop
-    bleachbit
     blender
     gimp
-    localsend
+    gthumb
     vlc
-    micro
     obs-studio
-    obsidian
     mousepad
     google-chrome
     libreoffice
-    nil
-    nixd
+    localsend
+
+    # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
+    fuzzel
+    wev
+    lxqt.lxqt-policykit
+    firefoxpwa
   ];
 }

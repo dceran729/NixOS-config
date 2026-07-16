@@ -2,7 +2,7 @@
  *
  * Author : Aditya Shakya (adi1090x)
  * Github : @adi1090x
- * 
+ *
  * Rofi Theme File
  * Rofi Version: 1.7.3
  **/
@@ -14,7 +14,11 @@ configuration {
     display-drun:               "";
     display-run:                "";
     display-filebrowser:        "";
+    drun-match-fields:          "name";
 	drun-display-format:        "{name}";
+	matching: "fuzzy";
+	sort:                       true;
+    sorting-method:             "levenshtein";
 	window-format:              "{w} · {c} · {t}";
     kb-mode-next:               "Tab";
     kb-element-next:            "";      /* Wyłącza przechodzenie do nast. elementu Tabem */
@@ -168,7 +172,7 @@ listview {
     reverse:                     false;
     fixed-height:                true;
     fixed-columns:               true;
-    
+
     spacing:                     8px;
     margin:                      0px;
     padding:                     0px;

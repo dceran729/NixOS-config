@@ -9,19 +9,16 @@
   };
 
   environment.systemPackages = with pkgs; [
-    #SDDM-Theme
+    # --- Zależności interfejsu (SDDM) ---
     kdePackages.qtdeclarative
-    kdePackages.qtsvg
 
-    #Hyprland-dependancies
-    brightnessctl
-    playerctl
-    wireplumber
+    # --- Narzędzia systemowe i multimedialne ---
+    brightnessctl # Kontrola jasności z poziomu kernela
+    playerctl # Globalna kontrola multimediów (klawisze funkcyjne)
+    wireplumber # Serwer sesji audio (niezbędny do działania PipeWire)
+    ffmpeg # Biblioteki dekodowania wideo (potrzebne systemowo)
 
-    #waybar stuff
-    waybar
-
-    nix-output-monitor
-    ffmpeg
+    # --- Narzędzia diagnostyczne ---
+    nix-output-monitor # Ładniejsze wyświetlanie postępu budowania (np. polecenie 'nom')
   ];
 }

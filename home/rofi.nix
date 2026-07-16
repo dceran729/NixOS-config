@@ -3,15 +3,6 @@
 {
   programs.rofi = {
     enable = true;
-    extraConfig = {
-      matching = "fuzzy";
-      sort = true;
-      sorting-method = "fzf";
-      # TA LINIJKA ROBI ROBOTĘ:
-      # Rofi będzie szukać wpisanych liter TYLKO w nazwie aplikacji
-      # (i ewentualnie nazwie ogólnej, np. "Przeglądarka internetowa")
-      drun-match-fields = "name,generic";
-    };
   };
 
   xdg.configFile."rofi" = {
