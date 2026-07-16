@@ -20,5 +20,8 @@
 
     #waybar stuff
     waybar
+
+    nix-output-monitor
+    ffmpeg
   ];
 }

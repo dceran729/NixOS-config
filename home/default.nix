@@ -23,8 +23,8 @@
   programs.home-manager.enable = true;
 
   home.shellAliases = {
-    r = "cd ~/NixOS-config && git add . && sudo nixos-rebuild switch --flake . && cd ~";
-
+    r = "cd ~/NixOS-config && git add . && sudo nixos-rebuild switch --flake . |& nom && cd ~";
+    ns = "nix run github:OleMussmann/Nix-Package-Search --";
     # Możesz tu od razu dodać inne przydatne skróty, na przykład:
     # update = "cd ~/NixOS-config && nix flake update && git add . && sudo nixos-rebuild switch --flake .";
     # ll = "ls -la";

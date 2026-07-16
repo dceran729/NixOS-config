@@ -3,11 +3,13 @@
 {
   programs.firefox = {
     enable = true;
+    package = pkgs.firefox-bin;
     configPath = "${config.xdg.configHome}/mozilla/firefox";
     profiles.damian2120 = {
       id = 0;
       isDefault = true;
     };
+    nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
 
   home.packages = with pkgs; [
@@ -16,7 +18,6 @@
     micro
     tree
     kdePackages.kate
-    discord
     vscode
     fastfetch
     distrobox
@@ -24,12 +25,29 @@
     alacritty
     fuzzel
     hyprlauncher
-    rofi
     hyprlock
     procps
     playerctl
     wev
     lxqt.lxqt-policykit
-    nix-output-monitor
+    gthumb
+    firefoxpwa
+    vesktop
+    zed-editor-fhs
+    nix-search-cli
+    bitwarden-desktop
+    bleachbit
+    blender
+    gimp
+    localsend
+    vlc
+    micro
+    obs-studio
+    obsidian
+    mousepad
+    google-chrome
+    libreoffice
+    nil
+    nixd
   ];
 }
