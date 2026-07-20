@@ -12,9 +12,8 @@
     nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
 
-  # Przeniosłem terminale z "paczki" na "moduł", żeby StyliX mógł je pokolorować!
-  programs.alacritty.enable = true;
-  programs.kitty.enable = true;
+  services.cliphist.enable = true;
+  services.swayosd.enable = true;
 
   home.packages = with pkgs; [
     # --- Narzędzia terminalowe i Nixowe ---
@@ -51,5 +50,9 @@
     wev
     lxqt.lxqt-policykit
     firefoxpwa
+    wl-clipboard
+    grim
+    slurp
+    swappy
   ];
 }

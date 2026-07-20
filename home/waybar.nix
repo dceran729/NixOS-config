@@ -6,10 +6,9 @@
     recursive = true;
   };
 
-    home.packages = with pkgs; [
+  home.packages = with pkgs; [
     waybar
     playerctl
-    pavucontrol
     impala
     btop
     bluetui

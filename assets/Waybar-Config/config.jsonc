@@ -79,7 +79,7 @@
   "cpu": {
     "interval": 5,
     "format": "󰍛",
-    "on-click": "alacritty -e btop",
+    "on-click": "ghostty -e btop",
   },
 
   "network": {
@@ -93,7 +93,7 @@
     "tooltip-format-disconnected": "Disconnected",
     "interval": 3,
     "spacing": 1,
-    "on-click": "alacritty -e impala",
+    "on-click": "ghostty -e impala",
   },
 
   "battery": {
@@ -123,12 +123,12 @@
     "format-connected": "󰂱 {device_alias}",
     "format-connected-battery": "󰂱 {device_alias} {device_battery_percentage}%",
     "tooltip-format": "Połączone urządzenia: {num_connections}",
-    "on-click": "alacritty -e bluetui",
+    "on-click": "ghostty -e bluetui",
   },
 
   "pulseaudio": {
     "format": "{icon}",
-    "on-click": "alacritty -e wiremix",
+    "on-click": "ghostty -e wiremix",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Głośność: {volume}%",
     "scroll-step": 5,

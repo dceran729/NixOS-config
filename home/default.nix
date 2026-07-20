@@ -8,6 +8,8 @@
     ./hyprland.nix
     ./ghostty.nix
     ./theme.nix
+    ./desktop_entries.nix
+    ./scripts.nix
   ];
 
   programs.bash.enable = true;

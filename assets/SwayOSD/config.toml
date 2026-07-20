@@ -1,0 +1,6 @@
+[server]
+# Pozwala SwayOSD zejść z jasnością aż do 1% (nadpisuje domyślne 5%)
+min_brightness = 1
+
+# Włącza natywne wyświetlanie cyfr z procentami obok paska!
+show_percentage = true
