@@ -19,7 +19,6 @@
     # --- Narzędzia terminalowe i Nixowe ---
     git
     gh
-    micro
     tree
     fastfetch
     procps

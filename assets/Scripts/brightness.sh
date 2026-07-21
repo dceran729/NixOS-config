@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 ACTION=$1
-MAX=$(brightnessctl max)
-CURRENT_RAW=$(brightnessctl get)
+MAX=$(brightnessctl -d intel_backlight max)
+CURRENT_RAW=$(brightnessctl -d intel_backlight get)
 CURRENT=$(( CURRENT_RAW * 100 / MAX ))
 
 if [[ "$ACTION" == "up" ]]; then
