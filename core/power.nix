@@ -20,6 +20,6 @@
   };
 
   systemd.sleep.settings.Sleep = {
-    HibernateDelaySec = "2h";
+    HibernateDelaySec = "1h";
   };
 }
