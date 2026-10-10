@@ -15,5 +15,7 @@
     ./fonts.nix
     ./theme.nix
     ./thunar.nix
+    ./ollama.nix
+    ./power.nix
   ];
 }

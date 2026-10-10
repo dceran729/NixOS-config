@@ -12,6 +12,13 @@
     nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
 
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 3"; # Automatyczne sprzątanie starych generacji
+    flake = "/home/damian2120/NixOS-config"; # Definiuje domyślną ścieżkę do Flake
+  };
+
   services.cliphist.enable = true;
   services.swayosd.enable = true;
 
@@ -30,7 +37,6 @@
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
-    zed-editor-fhs
     obsidian
     vesktop
     bitwarden-desktop
