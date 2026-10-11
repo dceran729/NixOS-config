@@ -1,18 +1,17 @@
-@define-color selected-text #7aa2f7;
-@define-color text #a9b1d6;
-@define-color base #1a1b26;
-@define-color border #a9b1d6;
-@define-color foreground #a9b1d6;
-@define-color background #1a1b26;
+/* ================================================== */
+/* ZMIENNE GLOBALNE DLA WALKERA                       */
+/* ================================================== */
+@define-color bg-col #141414;
+@define-color bg-alt #1E1E1E;
+@define-color text-col #FFFFFF;
+@define-color border-col #00c6fc;
+/* ================================================== */
 
 * {
     all: unset;
-}
-
-* {
-    font-family: monospace;
+    font-family: "JetBrainsMono Nerd Font", monospace;
     font-size: 18px;
-    color: @text;
+    color: @text-col;
 }
 
 scrollbar {
@@ -22,33 +21,25 @@ scrollbar {
 .normal-icons {
     -gtk-icon-size: 16px;
 }
-
 .large-icons {
     -gtk-icon-size: 32px;
 }
 
 .box-wrapper {
-    background: alpha(@base, 0.95);
+    background-color: @bg-col;
     padding: 20px;
-    border: 2px solid @border;
-}
-
-.preview-box {
-}
-
-.box {
+    border: 3px solid @border-col;
+    border-radius: 5px;
 }
 
 .search-container {
-    background: @base;
+    background-color: @bg-alt;
     padding: 10px;
+    border-radius: 5px;
 }
 
 .input placeholder {
-    opacity: 0.5;
-}
-
-.input {
+    color: #888888;
 }
 
 .input:focus,
@@ -57,46 +48,23 @@ scrollbar {
     outline: none;
 }
 
-.content-container {
-}
-
-.placeholder {
-}
-
-.scroll {
-}
-
-.list {
-}
-
-child,
-child > * {
-}
-
-child:hover .item-box {
-}
-
 child:selected .item-box {
+    background-color: @bg-alt;
+    border-radius: 5px;
 }
 
 child:selected .item-box * {
-    color: @selected-text;
-}
-
-child:selected {
-    background: alpha(@text, 0.07);
+    color: @border-col;
 }
 
 .item-box {
     padding-left: 14px;
+    background-color: transparent;
 }
 
 .item-text-box {
     all: unset;
     padding: 14px 0;
-}
-
-.item-text {
 }
 
 .item-subtext {
@@ -116,10 +84,8 @@ child:selected {
 }
 
 .keybind-hints {
-    background: @background;
+    background-color: @bg-col;
     padding: 10px;
     margin-top: 10px;
-}
-
-.preview {
+    border-radius: 5px;
 }

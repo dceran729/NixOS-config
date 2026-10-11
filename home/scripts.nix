@@ -32,5 +32,9 @@
     ".config/swayosd/config.toml" = {
       source = ../assets/SwayOSD/config.toml;
     };
+
+    ".config/swayosd/style.css" = {
+      source = ../assets/SwayOSD/style.css;
+    };
   };
 }

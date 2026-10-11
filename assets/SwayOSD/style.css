@@ -1,0 +1,47 @@
+/* ================================================== */
+/* ZMIENNE GLOBALNE DLA SWAYOSD                       */
+/* ================================================== */
+@define-color bg-col #141414;
+@define-color bg-alt #1E1E1E;
+@define-color text-col #FFFFFF;
+@define-color border-col #00c6fc;
+/* ================================================== */
+
+window {
+    background-color: @bg-col;
+    border: 3px solid @border-col;
+    border-radius: 5px; /* Globalne zaokrąglenie */
+}
+
+#container {
+    padding: 15px;
+    border-radius: 5px;
+}
+
+/* Tło paska (pusta część) */
+progressbar:disabled,
+progressbar {
+    background-color: @bg-alt;
+    border-radius: 5px;
+}
+
+progressbar > trough {
+    background-color: @bg-alt;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Wypełnienie paska */
+progressbar > trough > progress {
+    background-color: @border-col;
+    border-radius: 5px;
+}
+
+image {
+    color: @border-col;
+}
+
+label {
+    color: @text-col;
+    font-family: "JetBrainsMono Nerd Font", sans-serif;
+}
