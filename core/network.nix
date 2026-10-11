@@ -9,4 +9,9 @@
   # Jeśli używasz NetworkManagera (a używasz go w Waybarze),
   # musisz mu powiedzieć, żeby używał iwd jako silnika do WiFi:
   networking.networkmanager.wifi.backend = "iwd";
+
+  networking.firewall = {
+    allowedTCPPorts = [ 53317 ];
+    allowedUDPPorts = [ 53317 ];
+  };
 }

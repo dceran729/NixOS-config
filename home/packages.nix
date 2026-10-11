@@ -19,6 +19,8 @@
     flake = "/home/damian2120/NixOS-config"; # Definiuje domyślną ścieżkę do Flake
   };
 
+  # programs.localsend.enable = true;
+
   services.cliphist.enable = true;
   services.swayosd.enable = true;
 
