@@ -18,7 +18,8 @@
   # 2. PRZEKAZUJEMY STYLIXA DO OUTPUTS
   outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs: {
     nixosConfigurations = {
-      # Nazwa Twojego hosta to "laptop"
+
+      # Twój główny laptop (bez zmian)
       DCNIX = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; }; # Przekazujemy "inputs" dalej do modułów
@@ -35,6 +36,16 @@
           }
         ];
       };
+
+      # DODANY SERWER: Lekka instalacja, bez środowiska graficznego
+      server = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/server/default.nix
+        ];
+      };
+
     };
   };
 }
