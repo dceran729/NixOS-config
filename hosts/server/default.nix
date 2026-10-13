@@ -4,7 +4,8 @@
   imports = [
     ./hardware.nix
     ./storage.nix
-    ./network.nix    # <--- Nowy plik do sieci
+    ./network.nix
+    ./media.nix
   ];
 
   networking.hostName = "DCSRW";
