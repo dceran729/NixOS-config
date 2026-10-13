@@ -26,12 +26,8 @@
   programs.home-manager.enable = true;
 
   home.shellAliases = {
-    # r = "sudo true && cd ~/NixOS-config && git add . && sudo nixos-rebuild switch --flake . |& nom && cd ~";
-    # ns = "nix run github:OleMussmann/Nix-Package-Search --";
     r = "git -C ~/NixOS-config add . && nh os test";
     rs = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja: $(date '+%Y-%m-%d %H:%M:%S')" && git -C ~/NixOS-config push; fi && nh os switch'';
-    # Możesz tu od razu dodać inne przydatne skróty, na przykład:
-    # update = "cd ~/NixOS-config && nix flake update && git add . && sudo nixos-rebuild switch --flake .";
-    # ll = "ls -la";
+    rs-srw = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja serwera: $(date '+%Y-%m-%d %H:%M:%S')"; fi && nixos-rebuild switch --flake ~/NixOS-config#DCSRW --target-host damian2120@192.168.1.21 --sudo --ask-sudo-password'';
   };
 }
