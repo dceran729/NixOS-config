@@ -86,18 +86,18 @@
     };
 
     # Dashboard / Wizytówka
-    homepage = {
-        image = "ghcr.io/gethomepage/homepage:latest";
-        volumes = [
-          "/var/lib/containers/homepage:/app/config"
-          "/var/run/podman/podman.sock:/var/run/docker.sock:ro" # Dostęp do statusu kontenerów
-        ];
-        ports = [ "3001:3000" ];
-        # TUTAJ DODAJEMY BLOK ENVIRONMENT:
-        environment = {
-          HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38,192.168.1.21";
-      };
-    };
+        homepage = {
+          image = "ghcr.io/gethomepage/homepage:latest";
+          volumes = [
+            "/var/lib/containers/homepage:/app/config"
+            "/var/run/podman/podman.sock:/var/run/docker.sock:ro" # Dostęp do statusu kontenerów
+          ];
+          ports = [ "3001:3000" ];
+          environment = {
+            # TYM RAZEM Z PORTAMI 3001 NA KOŃCU:
+            HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
+          };
+        };
 
     # Monitorowanie usług
     uptime-kuma = {
