@@ -4,7 +4,10 @@
   # ==========================================
   # 1. JELLYFIN (Uruchamiany natywnie dla QuickSync)
   # ==========================================
-  services.jellyfin.enable = true;
+  services.jellyfin = {
+      enable = true;
+      openFirewall = true; # <--- TA LINIJKA JEST KLUCZOWA (Otwiera porty 8096 i 8920)
+  };
 
   # Dodajemy Jellyfina do grupy media i grup renderowania wideo
   users.users.jellyfin.extraGroups = [ "media" "render" "video" ];
@@ -79,7 +82,7 @@
 
     # Monitorowanie usług
     uptime-kuma = {
-      image = "louislam/uptime-kuma:1";
+      image = "louislam/uptime-kuma:latest";
       volumes = [
         "/var/lib/containers/uptimekuma:/app/data"
         "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
