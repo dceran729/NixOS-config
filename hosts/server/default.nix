@@ -3,11 +3,11 @@
 {
   imports = [
     ./hardware.nix
+    ./storage.nix
+    ./network.nix    # <--- Nowy plik do sieci
   ];
 
-  # 1. ZMIANA NAZWY SERWERA:
   networking.hostName = "DCSRW";
-
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = false;
 
@@ -19,14 +19,24 @@
     settings.PermitRootLogin = "yes";
   };
 
-  # 2. ZMIANA ZAUFANEGO UŻYTKOWNIKA NA TWOJEGO:
   nix.settings.trusted-users = [ "root" "damian2120" ];
 
-  # 3. TWORZENIE TWOJEGO KONTA (Tak samo jak na głównym PC):
+  # TWOJE KONTO (dodano dostęp do grup video i render dla QuickSync!)
   users.users.damian2120 = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-    initialPassword = "tymczasowe_haslo"; # Zmień na swoje, wpiszesz je przy pierwszym logowaniu
+    extraGroups = [ "wheel" "networkmanager" "media" "video" "render" ];
+  };
+
+  # ---------------------------------------------------
+  # INTEL QUICKSYNC (Akceleracja sprzętowa)
+  # ---------------------------------------------------
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver   # Główny, najnowszy sterownik dla Intel 12th Gen (iHD)
+      intel-vaapi-driver   # Zapasowy sterownik dla starszych API (i965)
+      libvdpau-va-gl
+    ];
   };
 
   services.logind.settings.Login.HandleLidSwitch = "ignore";
