@@ -70,6 +70,21 @@
       ports = [ "5055:5055" ];
     };
 
+    bazarr = {
+          image = "lscr.io/linuxserver/bazarr:latest";
+          autoStart = true;
+          ports = [ "6767:6767" ];
+          volumes = [
+            "/var/lib/containers/bazarr:/config"
+            "/data/media:/data/media" # Bazarr musi mieć dostęp do plików wideo
+          ];
+          environment = {
+            PUID = "1000";
+            PGID = "999";
+            TZ = "Europe/Warsaw";
+          };
+    };
+
     # Dashboard / Wizytówka
     homepage = {
       image = "ghcr.io/gethomepage/homepage:latest";

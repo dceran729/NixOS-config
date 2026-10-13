@@ -28,5 +28,6 @@
     "d         /var/lib/containers/jellyseerr   0775         damian2120  media  -"
     "d         /var/lib/containers/homepage     0775         damian2120  media  -"
     "d         /var/lib/containers/uptimekuma   0775         damian2120  media  -"
+    "d         /var/lib/containers/bazarr       0775         damian2120  media  -"
   ];
 }
