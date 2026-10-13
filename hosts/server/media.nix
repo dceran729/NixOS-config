@@ -82,7 +82,7 @@
 
     # Monitorowanie usług
     uptime-kuma = {
-      image = "louislam/uptime-kuma:latest";
+      image = "louislam/uptime-kuma:2";
       volumes = [
         "/var/lib/containers/uptimekuma:/app/data"
         "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
