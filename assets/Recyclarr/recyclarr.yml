@@ -1,0 +1,15 @@
+radarr:
+  moj_radarr:
+    base_url: http://100.95.221.38:7878
+    api_key: fef383ab7b024602bb561b78dae7e7df
+    include:
+      - template: radarr-quality-definition-movie
+      - template: radarr-quality-profile-web-1080p
+
+sonarr:
+  moj_sonarr:
+    base_url: http://100.95.221.38:8989
+    api_key: 05ea96dd19274a0ba7f6d1e6c3532968
+    include:
+      - template: sonarr-quality-definition-series
+      - template: sonarr-quality-profile-web-1080p

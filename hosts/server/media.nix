@@ -1,29 +1,21 @@
 { config, pkgs, ... }:
 
 {
-  # ==========================================
-  # 1. JELLYFIN (Uruchamiany natywnie dla QuickSync)
-  # ==========================================
-  services.jellyfin = {
-      enable = true;
-      openFirewall = true; # <--- TA LINIJKA JEST KLUCZOWA (Otwiera porty 8096 i 8920)
+  environment.etc."recyclarr.yml" = {
+    source = ../../assets/Recyclarr/recyclarr.yml;
   };
 
-  # Dodajemy Jellyfina do grupy media i grup renderowania wideo
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+  };
+
   users.users.jellyfin.extraGroups = [ "media" "render" "video" ];
 
-  # ==========================================
-  # 2. PODMAN (Silnik Kontenerów)
-  # ==========================================
   virtualisation.containers.enable = true;
   virtualisation.oci-containers.backend = "podman";
 
-  # ==========================================
-  # 3. STACK APLIKACJI OCI
-  # ==========================================
   virtualisation.oci-containers.containers = {
-
-    # Klient Torrent
     qbittorrent = {
       image = "lscr.io/linuxserver/qbittorrent:latest";
       environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; WEBUI_PORT = "8080"; };
@@ -31,7 +23,6 @@
       ports = [ "8080:8080" "6881:6881" "6881:6881/udp" ];
     };
 
-    # Menedżer Filmów
     radarr = {
       image = "lscr.io/linuxserver/radarr:latest";
       environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
@@ -39,7 +30,6 @@
       ports = [ "7878:7878" ];
     };
 
-    # Menedżer Seriali
     sonarr = {
       image = "lscr.io/linuxserver/sonarr:latest";
       environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
@@ -47,7 +37,6 @@
       ports = [ "8989:8989" ];
     };
 
-    # Menedżer Indeksatorów
     prowlarr = {
       image = "lscr.io/linuxserver/prowlarr:latest";
       environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
@@ -55,14 +44,12 @@
       ports = [ "9696:9696" ];
     };
 
-    # Omijanie Cloudflare dla Prowlarra
     flaresolverr = {
       image = "ghcr.io/flaresolverr/flaresolverr:latest";
       environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
       ports = [ "8191:8191" ];
     };
 
-    # Platforma zgłaszania żądań (Requesty)
     jellyseerr = {
       image = "fallenbagel/jellyseerr:latest";
       environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
@@ -71,33 +58,32 @@
     };
 
     bazarr = {
-          image = "lscr.io/linuxserver/bazarr:latest";
-          autoStart = true;
-          ports = [ "6767:6767" ];
-          volumes = [
-            "/var/lib/containers/bazarr:/config"
-            "/data/media:/data/media" # Bazarr musi mieć dostęp do plików wideo
-          ];
-          environment = {
-            PUID = "1000";
-            PGID = "999";
-            TZ = "Europe/Warsaw";
-          };
+      image = "lscr.io/linuxserver/bazarr:latest";
+      autoStart = true;
+      ports = [ "6767:6767" ];
+      volumes = [
+        "/var/lib/containers/bazarr:/config"
+        "/data/media:/data/media"
+      ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
     };
 
-    # Dashboard / Wizytówka (Powrót do korzeni)
-        homepage = {
-          image = "ghcr.io/gethomepage/homepage:latest";
-          volumes = [
-            "/var/lib/containers/homepage:/app/config"
-            "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
-          ];
-          ports = [ "3001:3000" ];
-          environment = {
-            HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
-          };
-        };
-    # Monitorowanie usług
+    homepage = {
+      image = "ghcr.io/gethomepage/homepage:latest";
+      volumes = [
+        "/var/lib/containers/homepage:/app/config"
+        "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+      ];
+      ports = [ "3001:3000" ];
+      environment = {
+        HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
+      };
+    };
+
     uptime-kuma = {
       image = "louislam/uptime-kuma:2";
       volumes = [
@@ -107,75 +93,67 @@
       ports = [ "3002:3001" ];
     };
 
-    # ==========================================
-        # VAULTWARDEN (Menedżer haseł)
-        # ==========================================
-        vaultwarden = {
-          image = "vaultwarden/server:latest";
-          environment = {
-            TZ = "Europe/Warsaw";
-            SIGNUPS_ALLOWED = "true"; # Zmień na "false" po założeniu swojego konta!
-          };
-          volumes = [ "/var/lib/containers/vaultwarden:/data" ];
-          ports = [ "8222:80" ];
-        };
+    vaultwarden = {
+      image = "vaultwarden/server:latest";
+      environment = {
+        TZ = "Europe/Warsaw";
+        SIGNUPS_ALLOWED = "true";
+      };
+      volumes = [ "/var/lib/containers/vaultwarden:/data" ];
+      ports = [ "8222:80" ];
+    };
 
-        # ==========================================
-        # SYNCTHING (Prywatna chmura / synchronizacja)
-        # ==========================================
-        syncthing = {
-          image = "lscr.io/linuxserver/syncthing:latest";
-          environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
-          volumes = [
-            "/var/lib/containers/syncthing:/config"
-            "/data/syncthing:/data1" # Twój folder na pliki
-          ];
-          ports = [
-            "8384:8384" # Panel WWW
-            "22000:22000" "22000:22000/udp" # Porty synchronizacji
-            "21027:21027/udp" # Wykrywanie lokalne
-          ];
-        };
+    syncthing = {
+      image = "lscr.io/linuxserver/syncthing:latest";
+      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+      volumes = [
+        "/var/lib/containers/syncthing:/config"
+        "/data/syncthing:/data1"
+      ];
+      ports = [
+        "8384:8384"
+        "22000:22000"
+        "22000:22000/udp"
+        "21027:21027/udp"
+      ];
+    };
 
-        # ==========================================
-        # RUSTDESK (Serwer Zdalnego Pulpitu)
-        # ==========================================
-        # 1. hbbs - ID Server (Serwer autoryzacji)
-        rustdesk-hbbs = {
-          image = "rustdesk/rustdesk-server:latest";
-          cmd = [ "hbbs" "-r" "100.95.221.38" ]; # Kluczowe: Twój adres Tailscale!
-          volumes = [ "/var/lib/containers/rustdesk:/root" ];
-          ports = [
-            "21115:21115"
-            "21116:21116"
-            "21116:21116/udp"
-            "21118:21118"
-          ];
-        };
+    rustdesk-hbbs = {
+      image = "rustdesk/rustdesk-server:latest";
+      cmd = [ "hbbs" "-r" "100.95.221.38" ];
+      volumes = [ "/var/lib/containers/rustdesk:/root" ];
+      ports = [
+        "21115:21115"
+        "21116:21116"
+        "21116:21116/udp"
+        "21118:21118"
+      ];
+    };
 
-        # 2. hbbr - Relay Server (Serwer przekazujący obraz)
-        rustdesk-hbbr = {
-          image = "rustdesk/rustdesk-server:latest";
-          cmd = [ "hbbr" ];
-          volumes = [ "/var/lib/containers/rustdesk:/root" ];
-          ports = [
-            "21117:21117"
-            "21119:21119"
-          ];
-        };
-    # Przeglądarka logów kontenerów
+    rustdesk-hbbr = {
+      image = "rustdesk/rustdesk-server:latest";
+      cmd = [ "hbbr" ];
+      volumes = [ "/var/lib/containers/rustdesk:/root" ];
+      ports = [
+        "21117:21117"
+        "21119:21119"
+      ];
+    };
+
     dozzle = {
       image = "amir20/dozzle:latest";
       volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
       ports = [ "8088:8080" ];
     };
 
-    # Recyclarr (Automatyzacja profili jakości)
-        recyclarr = {
-          image = "ghcr.io/recyclarr/recyclarr:latest";
-          environment = { TZ = "Europe/Warsaw"; };
-          user = "1000:999";
-          volumes = [ "/var/lib/containers/recyclarr:/config" ];
-        };
+    recyclarr = {
+      image = "ghcr.io/recyclarr/recyclarr:latest";
+      environment = { TZ = "Europe/Warsaw"; };
+      user = "1000:999";
+      volumes = [
+        "/var/lib/containers/recyclarr:/config"
+        "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
+      ];
+    };
   };
 }
