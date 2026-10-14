@@ -85,18 +85,17 @@
           };
     };
 
-        dashy = {
-          image = "lissy93/dashy:latest";
-          ports = [ "4000:8080" ];
-          environment = {
-            TZ = "Europe/Warsaw";
-            UID = "1000";
-            GID = "999";
-          };
+    # Dashboard / Wizytówka (Powrót do korzeni)
+        homepage = {
+          image = "ghcr.io/gethomepage/homepage:latest";
           volumes = [
-            # Wskazujemy precyzyjnie plik, który przed chwilą stworzyliśmy
-            "/var/lib/containers/dashy/conf.yml:/app/public/conf.yml"
+            "/var/lib/containers/homepage:/app/config"
+            "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
           ];
+          ports = [ "3001:3000" ];
+          environment = {
+            HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
+          };
         };
     # Monitorowanie usług
     uptime-kuma = {
