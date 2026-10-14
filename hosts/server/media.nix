@@ -87,19 +87,20 @@
 
     # Dashboard / Wizytówka
     # Główny, klikalny Dashboard
-        homarr = {
-          image = "ghcr.io/ajnart/homarr:latest";
-          volumes = [
-            "/var/lib/containers/homarr/configs:/app/data/configs"
-            "/var/lib/containers/homarr/icons:/app/data/icons"
-            "/var/lib/containers/homarr/data:/data"
-            "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
-          ];
-          ports = [ "7575:7575" ];
+    # Przepiękny i w pełni konfigurowalny Dashboard
+        dashy = {
+          image = "lissy93/dashy:latest";
+          ports = [ "4000:8080" ];
           environment = {
             TZ = "Europe/Warsaw";
+            UID = "1000";
+            GID = "999";
           };
-    };
+          volumes = [
+            # Dashy trzyma wszystkie swoje ustawienia i motywy w jednym folderze
+            "/var/lib/containers/dashy:/app/user-data"
+          ];
+        };
 
     # Monitorowanie usług
     uptime-kuma = {
