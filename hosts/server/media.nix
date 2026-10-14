@@ -85,9 +85,6 @@
           };
     };
 
-    # Dashboard / Wizytówka
-    # Główny, klikalny Dashboard
-    # Przepiękny i w pełni konfigurowalny Dashboard
         dashy = {
           image = "lissy93/dashy:latest";
           ports = [ "4000:8080" ];
@@ -97,11 +94,10 @@
             GID = "999";
           };
           volumes = [
-            # Dashy trzyma wszystkie swoje ustawienia i motywy w jednym folderze
-            "/var/lib/containers/dashy:/app/user-data"
+            # Wskazujemy precyzyjnie plik, który przed chwilą stworzyliśmy
+            "/var/lib/containers/dashy/conf.yml:/app/public/conf.yml"
           ];
         };
-
     # Monitorowanie usług
     uptime-kuma = {
       image = "louislam/uptime-kuma:2";
