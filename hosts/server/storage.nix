@@ -33,5 +33,6 @@
     "d         /var/lib/containers/syncthing    0775         damian2120  media  -"
     "d         /var/lib/containers/rustdesk     0775         damian2120  media  -"
     "d         /data/syncthing                  0775         damian2120  media  -"
+    "d         /var/lib/containers/recyclarr    0775         damian2120  media  -"
   ];
 }

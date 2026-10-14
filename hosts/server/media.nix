@@ -169,5 +169,13 @@
       volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
       ports = [ "8088:8080" ];
     };
+
+    # Recyclarr (Automatyzacja profili jakości)
+        recyclarr = {
+          image = "ghcr.io/recyclarr/recyclarr:latest";
+          environment = { TZ = "Europe/Warsaw"; };
+          user = "1000:999";
+          volumes = [ "/var/lib/containers/recyclarr:/config" ];
+        };
   };
 }

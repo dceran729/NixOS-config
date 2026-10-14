@@ -141,17 +141,23 @@ in
 
 {
   networking.hostName = "DCNIX";
-  #networking.networkmanager.enable = true;
-  # To musi trafić do konfiguracji systemowej (NixOS), NIE do Home Managera
   networking.wireless.iwd.enable = true;
 
   # Jeśli używasz NetworkManagera (a używasz go w Waybarze),
   # musisz mu powiedzieć, żeby używał iwd jako silnika do WiFi:
   networking.networkmanager.wifi.backend = "iwd";
 
+  # ==========================================
+  # DODANE: Usługa Tailscale
+  # ==========================================
+  services.tailscale.enable = true;
+
   networking.firewall = {
     allowedTCPPorts = [ 53317 ];
-    allowedUDPPorts = [ 53317 ];
+    # Dodajemy port Tailscale do UDP, co ułatwi bezpośrednie, szybkie połączenia
+    allowedUDPPorts = [ 53317 config.services.tailscale.port ];
+    # Mówimy systemowi: "Ufaj urządzeniom z mojej sieci Tailscale"
+    trustedInterfaces = [ "tailscale0" ];
   };
 }
 ```
@@ -505,8 +511,8 @@ in
   home.shellAliases = {
     r = "git -C ~/NixOS-config add . && nh os test";
     rs = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja: $(date '+%Y-%m-%d %H:%M:%S')" && git -C ~/NixOS-config push; fi && nh os switch'';
-    rs-srw = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja serwera: $(date '+%Y-%m-%d %H:%M:%S')"; fi && nixos-rebuild switch --flake ~/NixOS-config#DCSRW --target-host damian2120@192.168.1.21 --sudo --ask-sudo-password'';
-    ssh-srw = ''ssh damian2120@192.168.1.21'';
+    rs-srw = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja serwera: $(date '+%Y-%m-%d %H:%M:%S')"; fi && nixos-rebuild switch --flake ~/NixOS-config#DCSRW --target-host damian2120@100.95.221.38 --sudo --ask-sudo-password'';
+    ssh-srw = ''ssh -t damian2120@100.95.221.38 "TERM=xterm-256color bash -l"'';
   };
 }
 ```
@@ -998,6 +1004,10 @@ U   ESR          ESU   E```
     "d         /var/lib/containers/homepage     0775         damian2120  media  -"
     "d         /var/lib/containers/uptimekuma   0775         damian2120  media  -"
     "d         /var/lib/containers/bazarr       0775         damian2120  media  -"
+    "d         /var/lib/containers/vaultwarden  0775         damian2120  media  -"
+    "d         /var/lib/containers/syncthing    0775         damian2120  media  -"
+    "d         /var/lib/containers/rustdesk     0775         damian2120  media  -"
+    "d         /data/syncthing                  0775         damian2120  media  -"
   ];
 }
 ```
@@ -1091,20 +1101,18 @@ U   ESR          ESU   E```
           };
     };
 
-    # Dashboard / Wizytówka
-    homepage = {
-        image = "ghcr.io/gethomepage/homepage:latest";
-        volumes = [
-          "/var/lib/containers/homepage:/app/config"
-          "/var/run/podman/podman.sock:/var/run/docker.sock:ro" # Dostęp do statusu kontenerów
-        ];
-        ports = [ "3001:3000" ];
-        # TUTAJ DODAJEMY BLOK ENVIRONMENT:
-        environment = {
-          HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38,192.168.1.21";
-      };
-    };
-
+    # Dashboard / Wizytówka (Powrót do korzeni)
+        homepage = {
+          image = "ghcr.io/gethomepage/homepage:latest";
+          volumes = [
+            "/var/lib/containers/homepage:/app/config"
+            "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
+          ];
+          ports = [ "3001:3000" ];
+          environment = {
+            HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
+          };
+        };
     # Monitorowanie usług
     uptime-kuma = {
       image = "louislam/uptime-kuma:2";
@@ -1115,6 +1123,62 @@ U   ESR          ESU   E```
       ports = [ "3002:3001" ];
     };
 
+    # ==========================================
+        # VAULTWARDEN (Menedżer haseł)
+        # ==========================================
+        vaultwarden = {
+          image = "vaultwarden/server:latest";
+          environment = {
+            TZ = "Europe/Warsaw";
+            SIGNUPS_ALLOWED = "true"; # Zmień na "false" po założeniu swojego konta!
+          };
+          volumes = [ "/var/lib/containers/vaultwarden:/data" ];
+          ports = [ "8222:80" ];
+        };
+
+        # ==========================================
+        # SYNCTHING (Prywatna chmura / synchronizacja)
+        # ==========================================
+        syncthing = {
+          image = "lscr.io/linuxserver/syncthing:latest";
+          environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+          volumes = [
+            "/var/lib/containers/syncthing:/config"
+            "/data/syncthing:/data1" # Twój folder na pliki
+          ];
+          ports = [
+            "8384:8384" # Panel WWW
+            "22000:22000" "22000:22000/udp" # Porty synchronizacji
+            "21027:21027/udp" # Wykrywanie lokalne
+          ];
+        };
+
+        # ==========================================
+        # RUSTDESK (Serwer Zdalnego Pulpitu)
+        # ==========================================
+        # 1. hbbs - ID Server (Serwer autoryzacji)
+        rustdesk-hbbs = {
+          image = "rustdesk/rustdesk-server:latest";
+          cmd = [ "hbbs" "-r" "100.95.221.38" ]; # Kluczowe: Twój adres Tailscale!
+          volumes = [ "/var/lib/containers/rustdesk:/root" ];
+          ports = [
+            "21115:21115"
+            "21116:21116"
+            "21116:21116/udp"
+            "21118:21118"
+          ];
+        };
+
+        # 2. hbbr - Relay Server (Serwer przekazujący obraz)
+        rustdesk-hbbr = {
+          image = "rustdesk/rustdesk-server:latest";
+          cmd = [ "hbbr" ];
+          volumes = [ "/var/lib/containers/rustdesk:/root" ];
+          ports = [
+            "21117:21117"
+            "21119:21119"
+          ];
+        };
     # Przeglądarka logów kontenerów
     dozzle = {
       image = "amir20/dozzle:latest";
