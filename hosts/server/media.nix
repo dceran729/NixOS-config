@@ -86,18 +86,20 @@
     };
 
     # Dashboard / Wizytówka
-        homepage = {
-          image = "ghcr.io/gethomepage/homepage:latest";
+    # Główny, klikalny Dashboard
+        homarr = {
+          image = "ghcr.io/ajnart/homarr:latest";
           volumes = [
-            "/var/lib/containers/homepage:/app/config"
-            "/var/run/podman/podman.sock:/var/run/docker.sock:ro" # Dostęp do statusu kontenerów
+            "/var/lib/containers/homarr/configs:/app/data/configs"
+            "/var/lib/containers/homarr/icons:/app/data/icons"
+            "/var/lib/containers/homarr/data:/data"
+            "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
           ];
-          ports = [ "3001:3000" ];
+          ports = [ "7575:7575" ];
           environment = {
-            # TYM RAZEM Z PORTAMI 3001 NA KOŃCU:
-            HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
+            TZ = "Europe/Warsaw";
           };
-        };
+    };
 
     # Monitorowanie usług
     uptime-kuma = {

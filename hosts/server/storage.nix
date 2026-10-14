@@ -26,7 +26,10 @@
     "d         /var/lib/containers/sonarr       0775         damian2120  media  -"
     "d         /var/lib/containers/prowlarr     0775         damian2120  media  -"
     "d         /var/lib/containers/jellyseerr   0775         damian2120  media  -"
-    "d         /var/lib/containers/homepage     0775         damian2120  media  -"
+    "d         /var/lib/containers/homarr           0775         damian2120  media  -"
+    "d         /var/lib/containers/homarr/configs   0775         damian2120  media  -"
+    "d         /var/lib/containers/homarr/icons     0775         damian2120  media  -"
+    "d         /var/lib/containers/homarr/data      0775         damian2120  media  -"
     "d         /var/lib/containers/uptimekuma   0775         damian2120  media  -"
     "d         /var/lib/containers/bazarr       0775         damian2120  media  -"
   ];
