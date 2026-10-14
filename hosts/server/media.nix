@@ -107,6 +107,62 @@
       ports = [ "3002:3001" ];
     };
 
+    # ==========================================
+        # VAULTWARDEN (Menedżer haseł)
+        # ==========================================
+        vaultwarden = {
+          image = "vaultwarden/server:latest";
+          environment = {
+            TZ = "Europe/Warsaw";
+            SIGNUPS_ALLOWED = "true"; # Zmień na "false" po założeniu swojego konta!
+          };
+          volumes = [ "/var/lib/containers/vaultwarden:/data" ];
+          ports = [ "8222:80" ];
+        };
+
+        # ==========================================
+        # SYNCTHING (Prywatna chmura / synchronizacja)
+        # ==========================================
+        syncthing = {
+          image = "lscr.io/linuxserver/syncthing:latest";
+          environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+          volumes = [
+            "/var/lib/containers/syncthing:/config"
+            "/data/syncthing:/data1" # Twój folder na pliki
+          ];
+          ports = [
+            "8384:8384" # Panel WWW
+            "22000:22000" "22000:22000/udp" # Porty synchronizacji
+            "21027:21027/udp" # Wykrywanie lokalne
+          ];
+        };
+
+        # ==========================================
+        # RUSTDESK (Serwer Zdalnego Pulpitu)
+        # ==========================================
+        # 1. hbbs - ID Server (Serwer autoryzacji)
+        rustdesk-hbbs = {
+          image = "rustdesk/rustdesk-server:latest";
+          cmd = [ "hbbs" "-r" "100.95.221.38" ]; # Kluczowe: Twój adres Tailscale!
+          volumes = [ "/var/lib/containers/rustdesk:/root" ];
+          ports = [
+            "21115:21115"
+            "21116:21116"
+            "21116:21116/udp"
+            "21118:21118"
+          ];
+        };
+
+        # 2. hbbr - Relay Server (Serwer przekazujący obraz)
+        rustdesk-hbbr = {
+          image = "rustdesk/rustdesk-server:latest";
+          cmd = [ "hbbr" ];
+          volumes = [ "/var/lib/containers/rustdesk:/root" ];
+          ports = [
+            "21117:21117"
+            "21119:21119"
+          ];
+        };
     # Przeglądarka logów kontenerów
     dozzle = {
       image = "amir20/dozzle:latest";

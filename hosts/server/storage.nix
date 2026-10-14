@@ -29,5 +29,9 @@
     "d         /var/lib/containers/homepage     0775         damian2120  media  -"
     "d         /var/lib/containers/uptimekuma   0775         damian2120  media  -"
     "d         /var/lib/containers/bazarr       0775         damian2120  media  -"
+    "d         /var/lib/containers/vaultwarden  0775         damian2120  media  -"
+    "d         /var/lib/containers/syncthing    0775         damian2120  media  -"
+    "d         /var/lib/containers/rustdesk     0775         damian2120  media  -"
+    "d         /data/syncthing                  0775         damian2120  media  -"
   ];
 }
