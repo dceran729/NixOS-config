@@ -3,7 +3,7 @@ radarr:
     base_url: http://100.95.221.38:7878
     api_key: fef383ab7b024602bb561b78dae7e7df
     include:
-      - template: sqp-1-web-1080p
+      - template: sqp-1-1080p
 
 sonarr:
   moj_sonarr:
