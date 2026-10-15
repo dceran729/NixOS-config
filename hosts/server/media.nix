@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  environment.etc."recyclarr.yml" = {
-    source = ../../assets/Recyclarr/recyclarr.yml;
-  };
-
   services.jellyfin = {
     enable = true;
     openFirewall = true;
@@ -148,11 +144,11 @@
 
     recyclarr = {
           image = "ghcr.io/recyclarr/recyclarr:8";
-          cmd = [ "schedule" ];
           user = "1000:999";
           environment = { TZ = "Europe/Warsaw"; };
           volumes = [
             "/var/lib/containers/recyclarr:/config"
+            "${../../assets/Recyclarr/recyclarr.yml}:/config/recyclarr.yml:ro"
           ];
         };
   };
