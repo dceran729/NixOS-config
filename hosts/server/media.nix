@@ -153,7 +153,6 @@
           environment = { TZ = "Europe/Warsaw"; };
           volumes = [
             "/var/lib/containers/recyclarr:/config"
-            "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
           ];
         };
   };
