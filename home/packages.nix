@@ -36,6 +36,7 @@
     nil
     nixd
     nix-tree
+    gcc
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
