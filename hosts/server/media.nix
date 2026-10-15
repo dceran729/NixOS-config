@@ -147,13 +147,13 @@
     };
 
     recyclarr = {
-      image = "ghcr.io/recyclarr/recyclarr:latest";
-      environment = { TZ = "Europe/Warsaw"; };
-      user = "1000:999";
-      volumes = [
-        "/var/lib/containers/recyclarr:/config"
-        "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
-      ];
-    };
+          image = "ghcr.io/recyclarr/recyclarr:latest";
+          cmd = [ "schedule" ];
+          environment = { TZ = "Europe/Warsaw"; };
+          volumes = [
+            "/var/lib/containers/recyclarr:/config"
+            "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
+          ];
+        };
   };
 }
