@@ -147,7 +147,7 @@
     };
 
     recyclarr = {
-          image = "ghcr.io/recyclarr/recyclarr:latest";
+          image = "ghcr.io/recyclarr/recyclarr:8";
           cmd = [ "schedule" ];
           environment = { TZ = "Europe/Warsaw"; };
           volumes = [
