@@ -141,15 +141,5 @@
       volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
       ports = [ "8088:8080" ];
     };
-
-    recyclarr = {
-          image = "ghcr.io/recyclarr/recyclarr:8";
-          user = "1000:999";
-          environment = { TZ = "Europe/Warsaw"; };
-          volumes = [
-            "/var/lib/containers/recyclarr:/config"
-            "${../../assets/Recyclarr/recyclarr.yml}:/config/recyclarr.yml:ro"
-          ];
-        };
   };
 }
