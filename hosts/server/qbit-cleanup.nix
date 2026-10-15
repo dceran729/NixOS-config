@@ -8,8 +8,8 @@
       COOKIE_JAR=$(mktemp)
       QBIT_URL="http://100.95.221.38:8080"
 
-      USER="admin"
-      PASS="adminadmin"
+      USER="DCSRW"
+      PASS="qwe321"
 
       curl -s -c "$COOKIE_JAR" --data "username=$USER&password=$PASS" "$QBIT_URL/api/v2/auth/login" > /dev/null
       JSON=$(curl -s -b "$COOKIE_JAR" "$QBIT_URL/api/v2/torrents/info")
