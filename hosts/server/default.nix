@@ -6,6 +6,7 @@
     ./storage.nix
     ./network.nix
     ./media.nix
+    ./qbit-cleanup.nix
   ];
 
   networking.hostName = "DCSRW";

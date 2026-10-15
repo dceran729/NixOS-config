@@ -1014,6 +1014,7 @@ U   ESR          ESU   E```
     "d         /var/lib/containers/rustdesk     0775         damian2120  media  -"
     "d         /data/syncthing                  0775         damian2120  media  -"
     "d         /var/lib/containers/recyclarr    0775         damian2120  media  -"
+    "C+        /var/lib/containers/recyclarr/recyclarr.yml 0664 damian2120 media - /etc/recyclarr.yml"
   ];
 }
 ```
@@ -1023,10 +1024,6 @@ U   ESR          ESU   E```
 { config, pkgs, ... }:
 
 {
-  environment.etc."recyclarr.yml" = {
-    source = ../../assets/Recyclarr/recyclarr.yml;
-  };
-
   services.jellyfin = {
     enable = true;
     openFirewall = true;
@@ -1073,7 +1070,7 @@ U   ESR          ESU   E```
     };
 
     jellyseerr = {
-      image = "fallenbagel/jellyseerr:latest";
+      image = "fallenbagel/jellyseerr:develop";
       environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
       volumes = [ "/var/lib/containers/jellyseerr:/app/config" ];
       ports = [ "5055:5055" ];
@@ -1167,16 +1164,6 @@ U   ESR          ESU   E```
       volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
       ports = [ "8088:8080" ];
     };
-
-    recyclarr = {
-          image = "ghcr.io/recyclarr/recyclarr:8";
-          cmd = [ "schedule" ];
-          environment = { TZ = "Europe/Warsaw"; };
-          volumes = [
-            "/var/lib/containers/recyclarr:/config"
-            "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
-          ];
-        };
   };
 }
 ```
@@ -2704,20 +2691,32 @@ child:selected .item-box * {
 
 ### Plik: `assets/Recyclarr/recyclarr.yml`
 ```nix
+# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
 radarr:
   moj_radarr:
     base_url: http://100.95.221.38:7878
     api_key: fef383ab7b024602bb561b78dae7e7df
-    include:
-      - template: radarr-quality-definition-movie
-      - template: radarr-quality-profile-web-1080p
+    quality_profiles:
+      - trash_id: 90a3370d2d30cbaf08d9c23b856a12c8 # [SQP] SQP-1 WEB (1080p)
+        reset_unmatched_scores:
+          enabled: true
+    custom_format_groups:
+      add:
+        - trash_id: 15b1cf0b6f1a1493856a4355907affee # [Unwanted] Unwanted Formats SQP
 
 sonarr:
   moj_sonarr:
     base_url: http://100.95.221.38:8989
     api_key: 05ea96dd19274a0ba7f6d1e6c3532968
-    include:
-      - template: sonarr-quality-definition-series
-      - template: sonarr-quality-profile-web-1080p
+    quality_profiles:
+      - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+    custom_format_groups:
+      add:
+        - trash_id: 158188097a58d7687dee647e04af0da3 # [Optional] Golden Rule HD
+        - trash_id: 74aff4168620ed49dcc67e92b2c2a5b4 # [Optional] Language Profiles
+        - trash_id: 85fae4a2294965b75710ef2989c850eb # [Streaming Services] HD/UHD boost
+        - trash_id: 59c3af66780d08332fdc64e68297098f # [Unwanted] Unwanted Formats
 ```
 
