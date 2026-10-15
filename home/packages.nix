@@ -37,6 +37,7 @@
     nixd
     nix-tree
     gcc
+    sshfs
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode

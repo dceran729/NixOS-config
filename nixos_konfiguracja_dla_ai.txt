@@ -913,6 +913,7 @@ U   ESR          ESU   E```
     ./storage.nix
     ./network.nix
     ./media.nix
+    ./qbit-cleanup.nix
   ];
 
   networking.hostName = "DCSRW";
@@ -1013,8 +1014,6 @@ U   ESR          ESU   E```
     "d         /var/lib/containers/syncthing    0775         damian2120  media  -"
     "d         /var/lib/containers/rustdesk     0775         damian2120  media  -"
     "d         /data/syncthing                  0775         damian2120  media  -"
-    "d         /var/lib/containers/recyclarr    0775         damian2120  media  -"
-    "C+        /var/lib/containers/recyclarr/recyclarr.yml 0664 damian2120 media - /etc/recyclarr.yml"
   ];
 }
 ```
@@ -1163,6 +1162,47 @@ U   ESR          ESU   E```
       image = "amir20/dozzle:latest";
       volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
       ports = [ "8088:8080" ];
+    };
+  };
+}
+```
+
+### Plik: `hosts/server/qbit-cleanup.nix`
+```nix
+{ config, pkgs, ... }:
+
+{
+  systemd.services.qbit-cleanup = {
+    description = "Usuwa martwe torrenty z qBittorrenta by wymusic pobranie kolejnych w Radarr";
+    path = [ pkgs.curl pkgs.jq pkgs.coreutils ];
+    script = ''
+      COOKIE_JAR=$(mktemp)
+      QBIT_URL="http://100.95.221.38:8080"
+
+      USER="DCSRW"
+      PASS="qwe321"
+
+      curl -s -c "$COOKIE_JAR" --data "username=$USER&password=$PASS" "$QBIT_URL/api/v2/auth/login" > /dev/null
+      JSON=$(curl -s -b "$COOKIE_JAR" "$QBIT_URL/api/v2/torrents/info")
+      NOW=$(date +%s)
+
+      if [ -n "$JSON" ] && [ "$JSON" != "null" ]; then
+        HASHES=$(echo "$JSON" | jq -r --argjson now "$NOW" '.[] | select((.state == "metaDL" or .state == "stalledDL") and ($now - .added_on > 900)) | .hash')
+        for hash in $HASHES; do
+          curl -s -b "$COOKIE_JAR" --data "hashes=$hash&deleteFiles=true" "$QBIT_URL/api/v2/torrents/delete" > /dev/null
+        done
+      fi
+
+      curl -s -b "$COOKIE_JAR" "$QBIT_URL/api/v2/auth/logout" > /dev/null
+      rm -f "$COOKIE_JAR"
+    '';
+  };
+
+  systemd.timers.qbit-cleanup = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "5m";
+      OnUnitActiveSec = "5m";
     };
   };
 }
@@ -2687,36 +2727,5 @@ child:selected .item-box * {
     margin-top: 10px;
     border-radius: 5px;
 }
-```
-
-### Plik: `assets/Recyclarr/recyclarr.yml`
-```nix
-# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
-radarr:
-  moj_radarr:
-    base_url: http://100.95.221.38:7878
-    api_key: fef383ab7b024602bb561b78dae7e7df
-    quality_profiles:
-      - trash_id: 90a3370d2d30cbaf08d9c23b856a12c8 # [SQP] SQP-1 WEB (1080p)
-        reset_unmatched_scores:
-          enabled: true
-    custom_format_groups:
-      add:
-        - trash_id: 15b1cf0b6f1a1493856a4355907affee # [Unwanted] Unwanted Formats SQP
-
-sonarr:
-  moj_sonarr:
-    base_url: http://100.95.221.38:8989
-    api_key: 05ea96dd19274a0ba7f6d1e6c3532968
-    quality_profiles:
-      - trash_id: 72dae194fc92bf828f32cde7744e51a1 # WEB-1080p
-        reset_unmatched_scores:
-          enabled: true
-    custom_format_groups:
-      add:
-        - trash_id: 158188097a58d7687dee647e04af0da3 # [Optional] Golden Rule HD
-        - trash_id: 74aff4168620ed49dcc67e92b2c2a5b4 # [Optional] Language Profiles
-        - trash_id: 85fae4a2294965b75710ef2989c850eb # [Streaming Services] HD/UHD boost
-        - trash_id: 59c3af66780d08332fdc64e68297098f # [Unwanted] Unwanted Formats
 ```
 
