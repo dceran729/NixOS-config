@@ -20,6 +20,10 @@
     settings.PermitRootLogin = "yes";
   };
 
+  environment.systemPackages = with pkgs; [
+      ghostty.terminfo
+    ];
+
   nix.settings.trusted-users = [ "root" "damian2120" ];
 
   # TWOJE KONTO (dodano dostęp do grup video i render dla QuickSync!)

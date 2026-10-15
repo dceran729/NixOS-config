@@ -927,6 +927,10 @@ U   ESR          ESU   E```
     settings.PermitRootLogin = "yes";
   };
 
+  environment.systemPackages = with pkgs; [
+      ghostty.terminfo
+    ];
+
   nix.settings.trusted-users = [ "root" "damian2120" ];
 
   # TWOJE KONTO (dodano dostęp do grup video i render dla QuickSync!)
@@ -1165,14 +1169,14 @@ U   ESR          ESU   E```
     };
 
     recyclarr = {
-      image = "ghcr.io/recyclarr/recyclarr:latest";
-      environment = { TZ = "Europe/Warsaw"; };
-      user = "1000:999";
-      volumes = [
-        "/var/lib/containers/recyclarr:/config"
-        "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
-      ];
-    };
+          image = "ghcr.io/recyclarr/recyclarr:8";
+          cmd = [ "schedule" ];
+          environment = { TZ = "Europe/Warsaw"; };
+          volumes = [
+            "/var/lib/containers/recyclarr:/config"
+            "/etc/recyclarr.yml:/config/recyclarr.yml:ro"
+          ];
+        };
   };
 }
 ```
