@@ -149,6 +149,7 @@
     recyclarr = {
           image = "ghcr.io/recyclarr/recyclarr:8";
           cmd = [ "schedule" ];
+          user = "1000:999"; # <--- DODAJ TĘ LINIJKĘ
           environment = { TZ = "Europe/Warsaw"; };
           volumes = [
             "/var/lib/containers/recyclarr:/config"
