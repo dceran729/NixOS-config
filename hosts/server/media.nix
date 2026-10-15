@@ -47,7 +47,7 @@
     };
 
     jellyseerr = {
-      image = "fallenbagel/jellyseerr:latest";
+      image = "fallenbagel/jellyseerr:develop";
       environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
       volumes = [ "/var/lib/containers/jellyseerr:/app/config" ];
       ports = [ "5055:5055" ];
