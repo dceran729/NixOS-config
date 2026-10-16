@@ -30,7 +30,7 @@
     rs = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja: $(date '+%Y-%m-%d %H:%M:%S')" && git -C ~/NixOS-config push; fi && nh os switch'';
     rs-srw = ''git -C ~/NixOS-config add . && if ! git -C ~/NixOS-config diff --staged --quiet; then git -C ~/NixOS-config commit -m "Aktualizacja serwera: $(date '+%Y-%m-%d %H:%M:%S')"; fi && nixos-rebuild switch --flake ~/NixOS-config#DCSRW --target-host damian2120@100.95.221.38 --sudo --ask-sudo-password'';
     ssh-srw = ''ssh -t damian2120@100.95.221.38 "TERM=xterm-256color bash -l"'';
-    mount-srw = "mkdir -p ~/Serwer && sshfs damian2120@100.95.221.38:/ ~/Serwer -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3";
+    mount-srw = "mkdir -p ~/Serwer && sshfs damian2120@100.95.221.38:/ ~/Serwer";
     umount-srw = "fusermount -u ~/Serwer";
   };
 }
