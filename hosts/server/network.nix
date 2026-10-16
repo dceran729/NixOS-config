@@ -3,7 +3,7 @@
 {
   # 1. TAILSCALE - Dostęp zdalny z każdego miejsca na świecie
   services.tailscale.enable = true;
-  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  networking.firewall.trustedInterfaces = [ "tailscale0" "podman0" ];
   networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
 
   # 2. ADGUARD HOME - Twój prywatny DNS i bloker reklam
