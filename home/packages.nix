@@ -55,6 +55,7 @@
     google-chrome
     libreoffice
     localsend
+    xfburn
 
     # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
     fuzzel
