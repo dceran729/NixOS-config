@@ -1,12 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  services.jellyfin = {
-    enable = true;
-    openFirewall = true;
-  };
-
-  users.users.jellyfin.extraGroups = [ "media" "render" "video" ];
+  # Usunięto systemowego Jellyfina (services.jellyfin = { ... })
+  # oraz systemowe grupy (users.users.jellyfin...)
 
   virtualisation.containers.enable = true;
   virtualisation.oci-containers.backend = "podman";
@@ -140,6 +136,40 @@
       image = "amir20/dozzle:latest";
       volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
       ports = [ "8088:8080" ];
+    };
+
+    # === NOWY KONTENER: Jellyfin ===
+    jellyfin = {
+      image = "lscr.io/linuxserver/jellyfin:latest";
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
+      volumes = [
+        "/var/lib/containers/jellyfin:/config"
+        "/data:/data"
+      ];
+      ports = [
+        "8096:8096"
+        "8920:8920"
+        "7359:7359/udp"
+        "1900:1900/udp"
+      ];
+      extraOptions = [
+        "--device=/dev/dri:/dev/dri"
+      ];
+    };
+
+    # === NOWY KONTENER: qui ===
+    qui = {
+      image = "ghcr.io/autobrr/qui:latest";
+      environment = { TZ = "Europe/Warsaw"; };
+      volumes = [
+        "/var/lib/containers/qui:/config"
+        "/data:/data"
+      ];
+      ports = [ "7476:7476" ];
     };
   };
 }
