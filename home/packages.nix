@@ -55,14 +55,22 @@
     google-chrome
     libreoffice
     localsend
-    xfburn
-
-    gst_all_1.gstreamer
-    gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-good
-    gst_all_1.gst-plugins-bad
-    gst_all_1.gst-plugins-ugly
-    gst_all_1.gst-libav
+    (pkgs.symlinkJoin {
+          name = "xfburn-wrapped";
+          paths = [ pkgs.xfburn ];
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/xfburn \
+              --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${pkgs.lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+                gstreamer
+                gst-plugins-base
+                gst-plugins-good
+                gst-plugins-bad
+                gst-plugins-ugly
+                gst-libav
+              ])}"
+          '';
+        })
 
     # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
     fuzzel
