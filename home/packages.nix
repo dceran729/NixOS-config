@@ -56,6 +56,7 @@
     libreoffice
     localsend
     xfburn
+    kdePackages.k3b
 
     # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
     fuzzel
