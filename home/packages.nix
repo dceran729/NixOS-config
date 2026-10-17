@@ -38,6 +38,8 @@
     nix-tree
     gcc
     sshfs
+    yt-dlp
+    ffmpeg
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
