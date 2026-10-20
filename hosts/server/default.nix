@@ -7,6 +7,7 @@
     ./network.nix
     ./media.nix
     ./qbit-cleanup.nix
+    ./caddy.nix
   ];
 
   networking.hostName = "DCSRW";
@@ -22,15 +23,24 @@
   };
 
   environment.systemPackages = with pkgs; [
-      ghostty.terminfo
-    ];
+    ghostty.terminfo
+  ];
 
-  nix.settings.trusted-users = [ "root" "damian2120" ];
+  nix.settings.trusted-users = [
+    "root"
+    "damian2120"
+  ];
 
   # TWOJE KONTO (dodano dostęp do grup video i render dla QuickSync!)
   users.users.damian2120 = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "media" "video" "render" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "media"
+      "video"
+      "render"
+    ];
   };
 
   # ---------------------------------------------------
@@ -39,8 +49,8 @@
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver   # Główny, najnowszy sterownik dla Intel 12th Gen (iHD)
-      intel-vaapi-driver   # Zapasowy sterownik dla starszych API (i965)
+      intel-media-driver # Główny, najnowszy sterownik dla Intel 12th Gen (iHD)
+      intel-vaapi-driver # Zapasowy sterownik dla starszych API (i965)
       libvdpau-va-gl
     ];
   };
