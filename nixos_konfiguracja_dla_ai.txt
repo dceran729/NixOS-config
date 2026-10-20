@@ -469,7 +469,22 @@ in
     google-chrome
     libreoffice
     localsend
-    xfburn
+    (pkgs.symlinkJoin {
+          name = "xfburn-wrapped";
+          paths = [ pkgs.xfburn ];
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/xfburn \
+              --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${pkgs.lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+                gstreamer
+                gst-plugins-base
+                gst-plugins-good
+                gst-plugins-bad
+                gst-plugins-ugly
+                gst-libav
+              ])}"
+          '';
+        })
 
     # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
     fuzzel
@@ -2024,6 +2039,7 @@ bind = $mainMod SHIFT, C, exec, zeditor ~/NixOS-config
 bind = $mainMod SHIFT, D, exec, google-chrome-stable --app="https://www.disneyplus.com"
 bind = $mainMod SHIFT, F, exec, $fileManager
 bind = $mainMod SHIFT, G, exec, firefoxpwa site launch 01KXGEAFP9PVEPGE076912VFFW           #Gemini
+bind = $mainMod SHIFT, H, exec, firefoxpwa site launch 01M5AYH12GTA7BZCE3EMRSKWCM           #Homepage
 bind = $mainMod SHIFT, K, exec, firefoxpwa site launch 01KXC864P5YP28H2ZKWJZJ6BBX           #Ekursy
 bind = $mainMod SHIFT, L, exec, localsend_app
 bind = $mainMod SHIFT, M, exec, firefoxpwa site launch 01KXGE92QTY967Q9R6PRYKBNEK           #Gmail

@@ -9,6 +9,14 @@
       thunar-volman
     ];
   };
+  environment.systemPackages = with pkgs; [
+    # --- Backend (obsługa formatów) ---
+    unzip
+    p7zip
+    unrar
+
+    file-roller
+  ];
 
   # 2. Usługi wymagane przez Thunara (Kosz, miniatury, montowanie)
   services.gvfs.enable = true;
