@@ -221,7 +221,7 @@
     oracle-db = {
       image = "container-registry.oracle.com/database/free:latest";
       environment = {
-        ORACLE_PASSWORD = "qwe321";
+        ORACLE_PASSWORD = "Qwer4321";
       };
       volumes = [
         # Podman sam utworzy wolumen i ogarnie uprawnienia
