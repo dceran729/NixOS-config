@@ -221,13 +221,13 @@
     oracle-db = {
       image = "container-registry.oracle.com/database/free:latest";
       environment = {
-        ORACLE_PASSWORD = "qwe321";
+        ORACLE_PASSWORD = "MojeSuperHaslo123";
       };
       volumes = [
-        "/var/lib/containers/oracle:/opt/oracle/oradata"
+        # Podman sam utworzy wolumen i ogarnie uprawnienia
+        "oracle_data:/opt/oracle/oradata"
       ];
       ports = [ "1521:1521" ];
-      # DODANA LINIJKA - Zwiększenie SHM do 1 GB:
       extraOptions = [ "--shm-size=1g" ];
     };
   };
