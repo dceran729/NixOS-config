@@ -24,6 +24,12 @@
   services.cliphist.enable = true;
   services.swayosd.enable = true;
 
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true; # Integruje się z Twoim standardowym Bashem
+    nix-direnv.enable = true; # Włącza ultra-szybkie buforowanie środowisk Nix
+  };
+
   home.packages = with pkgs; [
     # --- Narzędzia terminalowe i Nixowe ---
     git
@@ -36,12 +42,10 @@
     nil
     nixd
     nix-tree
-    gcc
     sshfs
     yt-dlp
     ffmpeg
     netcat
-    python3
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
