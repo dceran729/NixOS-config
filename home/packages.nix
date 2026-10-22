@@ -40,6 +40,8 @@
     sshfs
     yt-dlp
     ffmpeg
+    netcat
+    python3
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
@@ -56,21 +58,26 @@
     libreoffice
     localsend
     (pkgs.symlinkJoin {
-          name = "xfburn-wrapped";
-          paths = [ pkgs.xfburn ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/xfburn \
-              --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${pkgs.lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+      name = "xfburn-wrapped";
+      paths = [ pkgs.xfburn ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/xfburn \
+          --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${
+            pkgs.lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (
+              with pkgs.gst_all_1;
+              [
                 gstreamer
                 gst-plugins-base
                 gst-plugins-good
                 gst-plugins-bad
                 gst-plugins-ugly
                 gst-libav
-              ])}"
-          '';
-        })
+              ]
+            )
+          }"
+      '';
+    })
 
     # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
     fuzzel
