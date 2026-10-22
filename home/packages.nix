@@ -45,6 +45,7 @@
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
+    dbeaver-bin
     obsidian
     vesktop
     bitwarden-desktop

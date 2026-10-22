@@ -10,41 +10,77 @@
   virtualisation.oci-containers.containers = {
     qbittorrent = {
       image = "lscr.io/linuxserver/qbittorrent:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; WEBUI_PORT = "8080"; };
-      volumes = [ "/var/lib/containers/qbittorrent:/config" "/data:/data" ];
-      ports = [ "8080:8080" "6881:6881" "6881:6881/udp" ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+        WEBUI_PORT = "8080";
+      };
+      volumes = [
+        "/var/lib/containers/qbittorrent:/config"
+        "/data:/data"
+      ];
+      ports = [
+        "8080:8080"
+        "6881:6881"
+        "6881:6881/udp"
+      ];
     };
 
     radarr = {
       image = "lscr.io/linuxserver/radarr:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
-      volumes = [ "/var/lib/containers/radarr:/config" "/data:/data" ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
+      volumes = [
+        "/var/lib/containers/radarr:/config"
+        "/data:/data"
+      ];
       ports = [ "7878:7878" ];
     };
 
     sonarr = {
       image = "lscr.io/linuxserver/sonarr:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
-      volumes = [ "/var/lib/containers/sonarr:/config" "/data:/data" ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
+      volumes = [
+        "/var/lib/containers/sonarr:/config"
+        "/data:/data"
+      ];
       ports = [ "8989:8989" ];
     };
 
     prowlarr = {
       image = "lscr.io/linuxserver/prowlarr:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
       volumes = [ "/var/lib/containers/prowlarr:/config" ];
       ports = [ "9696:9696" ];
     };
 
     flaresolverr = {
       image = "ghcr.io/flaresolverr/flaresolverr:latest";
-      environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
+      environment = {
+        LOG_LEVEL = "info";
+        TZ = "Europe/Warsaw";
+      };
       ports = [ "8191:8191" ];
     };
 
     jellyseerr = {
       image = "fallenbagel/jellyseerr:develop";
-      environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
+      environment = {
+        LOG_LEVEL = "info";
+        TZ = "Europe/Warsaw";
+      };
       volumes = [ "/var/lib/containers/jellyseerr:/app/config" ];
       ports = [ "5055:5055" ];
     };
@@ -97,7 +133,11 @@
 
     syncthing = {
       image = "lscr.io/linuxserver/syncthing:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
       volumes = [
         "/var/lib/containers/syncthing:/config"
         "/data/syncthing:/data1"
@@ -112,7 +152,11 @@
 
     rustdesk-hbbs = {
       image = "rustdesk/rustdesk-server:latest";
-      cmd = [ "hbbs" "-r" "100.95.221.38" ];
+      cmd = [
+        "hbbs"
+        "-r"
+        "100.95.221.38"
+      ];
       volumes = [ "/var/lib/containers/rustdesk:/root" ];
       ports = [
         "21115:21115"
@@ -164,12 +208,25 @@
     # === NOWY KONTENER: qui ===
     qui = {
       image = "ghcr.io/autobrr/qui:latest";
-      environment = { TZ = "Europe/Warsaw"; };
+      environment = {
+        TZ = "Europe/Warsaw";
+      };
       volumes = [
         "/var/lib/containers/qui:/config"
         "/data:/data"
       ];
       ports = [ "7476:7476" ];
+    };
+
+    oracle-db = {
+      image = "container-registry.oracle.com/database/free:latest";
+      environment = {
+        ORACLE_PASSWORD = "qwe321"; # Zmień na własne
+      };
+      volumes = [
+        "/var/lib/containers/oracle:/opt/oracle/oradata"
+      ];
+      ports = [ "1521:1521" ];
     };
   };
 }
