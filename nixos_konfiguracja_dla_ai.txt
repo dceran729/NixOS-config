@@ -317,6 +317,14 @@ in
       thunar-volman
     ];
   };
+  environment.systemPackages = with pkgs; [
+    # --- Backend (obsługa formatów) ---
+    unzip
+    p7zip
+    unrar
+
+    file-roller
+  ];
 
   # 2. Usługi wymagane przez Thunara (Kosz, miniatury, montowanie)
   services.gvfs.enable = true;
@@ -935,6 +943,7 @@ U   ESR          ESU   E```
     ./network.nix
     ./media.nix
     ./qbit-cleanup.nix
+    ./caddy.nix
   ];
 
   networking.hostName = "DCSRW";
@@ -950,15 +959,24 @@ U   ESR          ESU   E```
   };
 
   environment.systemPackages = with pkgs; [
-      ghostty.terminfo
-    ];
+    ghostty.terminfo
+  ];
 
-  nix.settings.trusted-users = [ "root" "damian2120" ];
+  nix.settings.trusted-users = [
+    "root"
+    "damian2120"
+  ];
 
   # TWOJE KONTO (dodano dostęp do grup video i render dla QuickSync!)
   users.users.damian2120 = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "media" "video" "render" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "media"
+      "video"
+      "render"
+    ];
   };
 
   # ---------------------------------------------------
@@ -967,8 +985,8 @@ U   ESR          ESU   E```
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver   # Główny, najnowszy sterownik dla Intel 12th Gen (iHD)
-      intel-vaapi-driver   # Zapasowy sterownik dla starszych API (i965)
+      intel-media-driver # Główny, najnowszy sterownik dla Intel 12th Gen (iHD)
+      intel-vaapi-driver # Zapasowy sterownik dla starszych API (i965)
       libvdpau-va-gl
     ];
   };
@@ -1256,6 +1274,42 @@ U   ESR          ESU   E```
     timerConfig = {
       OnBootSec = "5m";
       OnUnitActiveSec = "5m";
+    };
+  };
+}
+```
+
+### Plik: `hosts/server/caddy.nix`
+```nix
+{ config, pkgs, ... }:
+
+{
+  # Otwieramy porty HTTP (80) i HTTPS (443) w zaporze sieciowej
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+    8443
+  ];
+
+  services.caddy = {
+    enable = true;
+
+    virtualHosts = {
+      # Vaultwarden na bezpiecznym połączeniu HTTPS z wewnętrznym certyfikatem SSL
+      "https://100.95.221.38:8443" = {
+        extraConfig = ''
+          tls internal
+          reverse_proxy 127.0.0.1:8222
+        '';
+      };
+
+      # Tutaj w przyszłości możesz dodawać kolejne usługi, np.:
+      # "jellyfin.local" = {
+      #   extraConfig = ''
+      #     tls internal
+      #     reverse_proxy 127.0.0.1:8096
+      #   '';
+      # };
     };
   };
 }
