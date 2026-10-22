@@ -221,12 +221,14 @@
     oracle-db = {
       image = "container-registry.oracle.com/database/free:latest";
       environment = {
-        ORACLE_PASSWORD = "qwe321"; # Zmień na własne
+        ORACLE_PASSWORD = "qwe321";
       };
       volumes = [
         "/var/lib/containers/oracle:/opt/oracle/oradata"
       ];
       ports = [ "1521:1521" ];
+      # DODANA LINIJKA - Zwiększenie SHM do 1 GB:
+      extraOptions = [ "--shm-size=1g" ];
     };
   };
 }
