@@ -7,7 +7,6 @@
   # Integracja z motywami GTK i dodanie Twoich ikon Papirus
   gtk = {
     enable = true;
-    gtk4.theme = null;
 
     iconTheme = {
       name = "Papirus-Dark";
