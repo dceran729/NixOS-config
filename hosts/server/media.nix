@@ -3,11 +3,10 @@
 let
   # ---- Ustawienia panelu Homepage ------------------------------------
   hostIp = "100.95.221.38";
-  domain = "home.arpa";
-  # false = linki prowadzą na http://IP:port (działa od razu).
-  # true  = linki prowadzą na https://nazwa.home.arpa (po konfiguracji
-  #         AdGuard + Tailscale DNS i certyfikatu Caddy).
-  useDomains = false;
+
+  # Adres Vaultwardena (HTTPS z prawdziwym certyfikatem od Tailscale).
+  # Ma się zgadzać z nazwą serwera w Tailscale (patrz instrukcja).
+  vaultUrl = "https://dcsrw.tail4232f5.ts.net";
 
   # Nazwy grup (używane i w układzie, i na liście usług - muszą się zgadzać)
   gMedia = "Multimedia";
@@ -15,15 +14,12 @@ let
   gDl    = "Pobieranie";
   gSys   = "System";
 
-  # Jedna kafelka: link + wskaźnik działania (zielona kropka) bez kluczy API
-  svc = { name, sub, port, icon, desc }: {
+  # Jeden kafelek: link (domyślnie http://IP:port) + wskaźnik działania
+  # (zielona kropka) bez kluczy API
+  svc = { name, port, icon, desc, href ? "http://${hostIp}:${toString port}" }: {
     ${name} = {
-      inherit icon;
+      inherit icon href;
       description = desc;
-      href =
-        if useDomains
-        then "https://${sub}.${domain}"
-        else "http://${hostIp}:${toString port}";
       siteMonitor = "http://127.0.0.1:${toString port}";
     };
   };
@@ -77,7 +73,10 @@ in
 
   services.flaresolverr.enable = true; # port 8191
 
-  services.jellyseerr.enable = true; # port 5055
+  services.jellyseerr = {
+    enable = true; # port 5055
+    openFirewall = true; # dostęp z sieci domowej (rodzina)
+  };
 
   # ---------------------------------------------------------------------
   # TORRENTY
@@ -107,7 +106,7 @@ in
   services.homepage-dashboard = {
     enable = true;
     listenPort = 3001;
-    allowedHosts = "dash.${domain},${hostIp}:3001,localhost:3001,127.0.0.1:3001";
+    allowedHosts = "${hostIp}:3001,localhost:3001,127.0.0.1:3001";
 
     settings = {
       title = "Centrum Dowodzenia";
@@ -142,24 +141,24 @@ in
 
     services = [
       { ${gMedia} = [
-          (svc { name = "Jellyfin"; sub = "jellyfin";   port = 8096; icon = "jellyfin.svg";   desc = "Filmy i seriale"; })
-          (svc { name = "Seerr";    sub = "jellyseerr"; port = 5055; icon = "jellyseerr.svg"; desc = "Prośby o nowe tytuły"; })
+          (svc { name = "Jellyfin"; port = 8096; icon = "jellyfin.svg";   desc = "Filmy i seriale"; })
+          (svc { name = "Seerr";    port = 5055; icon = "jellyseerr.svg"; desc = "Prośby o nowe tytuły"; })
         ]; }
       { ${gAuto} = [
-          (svc { name = "Radarr";   sub = "radarr";   port = 7878; icon = "radarr.svg";   desc = "Filmy"; })
-          (svc { name = "Sonarr";   sub = "sonarr";   port = 8989; icon = "sonarr.svg";   desc = "Seriale"; })
-          (svc { name = "Prowlarr"; sub = "prowlarr"; port = 9696; icon = "prowlarr.svg"; desc = "Indeksery"; })
-          (svc { name = "Bazarr";   sub = "bazarr";   port = 6767; icon = "bazarr.svg";   desc = "Napisy"; })
+          (svc { name = "Radarr";   port = 7878; icon = "radarr.svg";   desc = "Filmy"; })
+          (svc { name = "Sonarr";   port = 8989; icon = "sonarr.svg";   desc = "Seriale"; })
+          (svc { name = "Prowlarr"; port = 9696; icon = "prowlarr.svg"; desc = "Indeksery"; })
+          (svc { name = "Bazarr";   port = 6767; icon = "bazarr.svg";   desc = "Napisy"; })
         ]; }
       { ${gDl} = [
-          (svc { name = "qBittorrent"; sub = "qbit";  port = 8080; icon = "qbittorrent.svg"; desc = "Torrenty"; })
-          (svc { name = "qui";         sub = "qui";   port = 7476; icon = "autobrr.png";     desc = "Panel qBittorrenta"; })
-          (svc { name = "Syncthing";   sub = "sync";  port = 8384; icon = "syncthing.svg";   desc = "Synchronizacja"; })
+          (svc { name = "qBittorrent"; port = 8080; icon = "qbittorrent.svg"; desc = "Torrenty"; })
+          (svc { name = "qui";         port = 7476; icon = "autobrr.png";     desc = "Panel qBittorrenta"; })
+          (svc { name = "Syncthing";   port = 8384; icon = "syncthing.svg";   desc = "Synchronizacja"; })
         ]; }
       { ${gSys} = [
-          (svc { name = "Vaultwarden"; sub = "vault";   port = 8222; icon = "vaultwarden.svg";  desc = "Hasła"; })
-          (svc { name = "Uptime Kuma"; sub = "kuma";    port = 3002; icon = "uptime-kuma.svg";  desc = "Monitoring"; })
-          (svc { name = "AdGuard";     sub = "adguard"; port = 3000; icon = "adguard-home.svg"; desc = "DNS i reklamy"; })
+          (svc { name = "Vaultwarden"; href = vaultUrl; port = 8222; icon = "vaultwarden.svg";  desc = "Hasła"; })
+          (svc { name = "Uptime Kuma"; port = 3002; icon = "uptime-kuma.svg";  desc = "Monitoring"; })
+          (svc { name = "AdGuard";     port = 3000; icon = "adguard-home.svg"; desc = "DNS i reklamy"; })
         ]; }
     ];
 
@@ -233,7 +232,7 @@ in
     enable = true;
     settings = {
       PORT = "3002";
-      HOST = "127.0.0.1";
+      HOST = "0.0.0.0"; # dostępne tylko przez Tailscale (zapora blokuje LAN)
     };
   };
 
@@ -241,7 +240,7 @@ in
     enable = true;
     dbBackend = "sqlite";
     config = {
-      DOMAIN = "https://vault.home.arpa";
+      DOMAIN = vaultUrl;
       ROCKET_ADDRESS = "127.0.0.1";
       ROCKET_PORT = 8222;
       SIGNUPS_ALLOWED = false; # włącz tylko na chwilę, gdy zakładasz nowe konto
@@ -254,7 +253,7 @@ in
     group = "media";
     dataDir = "/data/syncthing";
     configDir = "/var/lib/syncthing";
-    guiAddress = "127.0.0.1:8384";
+    guiAddress = "0.0.0.0:8384"; # dostępne tylko przez Tailscale; ustaw hasło w panelu
     openDefaultPorts = true; # 22000 tcp/udp, 21027 udp
     # Kontener miał nowszą wersję Syncthinga niż nixpkgs; bez tej flagi
     # program odmawia startu na skopiowanym pliku konfiguracji.
