@@ -2,16 +2,27 @@
 
 {
   systemd.services.qbit-cleanup = {
-    description = "Usuwa martwe torrenty z qBittorrenta by wymusic pobranie kolejnych w Radarr";
-    path = [ pkgs.curl pkgs.jq pkgs.coreutils ];
+    description = "Usuwa martwe torrenty z qBittorrenta, by wymusić pobranie kolejnych w Radarr";
+    after = [ "qbittorrent.service" ];
+    path = [
+      pkgs.curl
+      pkgs.jq
+      pkgs.coreutils
+    ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      # Plik /var/lib/secrets/qbit-cleanup.env (chmod 600, własność roota):
+      #   QBIT_USER=...
+      #   QBIT_PASS=...
+      EnvironmentFile = "/var/lib/secrets/qbit-cleanup.env";
+    };
+
     script = ''
       COOKIE_JAR=$(mktemp)
-      QBIT_URL="http://100.95.221.38:8080"
+      QBIT_URL="http://127.0.0.1:8080"
 
-      USER="DCSRW"
-      PASS="qwe321"
-
-      curl -s -c "$COOKIE_JAR" --data "username=$USER&password=$PASS" "$QBIT_URL/api/v2/auth/login" > /dev/null
+      curl -s -c "$COOKIE_JAR" --data-urlencode "username=$QBIT_USER" --data-urlencode "password=$QBIT_PASS" "$QBIT_URL/api/v2/auth/login" > /dev/null
       JSON=$(curl -s -b "$COOKIE_JAR" "$QBIT_URL/api/v2/torrents/info")
       NOW=$(date +%s)
 

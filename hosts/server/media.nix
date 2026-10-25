@@ -1,232 +1,141 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  # Usunięto systemowego Jellyfina (services.jellyfin = { ... })
-  # oraz systemowe grupy (users.users.jellyfin...)
+  # ---------------------------------------------------------------------
+  # WSPÓLNE
+  # ---------------------------------------------------------------------
 
+  # Pliki tworzone przez te usługi mają być zapisywalne dla całej grupy
+  # "media" (umask 0002) - inaczej np. Radarr nie przeniesie pliku
+  # pobranego przez qBittorrenta.
+  systemd.services = lib.genAttrs [ "jellyfin" "radarr" "sonarr" "bazarr" "qbittorrent" ] (_: {
+    serviceConfig.UMask = lib.mkForce "0002";
+  });
+
+  # ---------------------------------------------------------------------
+  # JELLYFIN (+ Intel QuickSync)
+  # ---------------------------------------------------------------------
+  services.jellyfin = {
+    enable = true;
+    group = "media";
+    openFirewall = true; # 8096/8920 + wykrywanie w LAN (1900/udp, 7359/udp) dla TV
+  };
+  users.users.jellyfin.extraGroups = [
+    "render"
+    "video"
+  ];
+
+  # ---------------------------------------------------------------------
+  # ARR STACK
+  # ---------------------------------------------------------------------
+  services.radarr = {
+    enable = true; # port 7878
+    group = "media";
+  };
+
+  services.sonarr = {
+    enable = true; # port 8989
+    group = "media";
+  };
+
+  services.prowlarr.enable = true; # port 9696
+
+  services.bazarr = {
+    enable = true; # port 6767
+    group = "media";
+  };
+
+  services.flaresolverr.enable = true; # port 8191
+
+  services.jellyseerr.enable = true; # port 5055
+
+  # ---------------------------------------------------------------------
+  # TORRENTY
+  # ---------------------------------------------------------------------
+  services.qbittorrent = {
+    enable = true;
+    group = "media";
+    webuiPort = 8080;
+    torrentingPort = 6881;
+  };
+  networking.firewall.allowedTCPPorts = [ 6881 ];
+  networking.firewall.allowedUDPPorts = [ 6881 ];
+
+  # Moduł qui z nixpkgs (port domyślnie 7476). Połączenie z qBittorrentem
+  # ustawiasz w jego panelu: http://127.0.0.1:8080
+  services.qui = {
+    enable = true;
+    # Wymagane. Plik z losowym sekretem sesji (sam ciąg znaków, bez nazwy
+    # zmiennej), poza /nix/store. Tworzysz go ręcznie:
+    #   openssl rand -hex 32 | sudo tee /var/lib/secrets/qui-session
+    secretFile = "/var/lib/secrets/qui-session";
+  };
+
+  # ---------------------------------------------------------------------
+  # PANEL, MONITORING, HASŁA, SYNCHRONIZACJA, ZDALNY PULPIT
+  # ---------------------------------------------------------------------
+  services.homepage-dashboard = {
+    enable = true;
+    listenPort = 3001;
+    allowedHosts = "dash.home.arpa,100.95.221.38:3001";
+    # TODO: tu trzeba przepisać Twoje services.yaml / settings.yaml / widgets.yaml
+    # z /var/lib/containers/homepage na opcje: services = [ ... ]; settings = { ... };
+    # (wklej mi te pliki, a je przetłumaczę)
+  };
+
+  services.uptime-kuma = {
+    enable = true;
+    settings = {
+      PORT = "3002";
+      HOST = "127.0.0.1";
+    };
+  };
+
+  services.vaultwarden = {
+    enable = true;
+    dbBackend = "sqlite";
+    config = {
+      DOMAIN = "https://vault.home.arpa";
+      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_PORT = 8222;
+      SIGNUPS_ALLOWED = false; # włącz tylko na chwilę, gdy zakładasz nowe konto
+    };
+  };
+
+  services.syncthing = {
+    enable = true;
+    user = "damian2120";
+    group = "media";
+    dataDir = "/data/syncthing";
+    configDir = "/var/lib/syncthing";
+    guiAddress = "127.0.0.1:8384";
+    openDefaultPorts = true; # 22000 tcp/udp, 21027 udp
+  };
+
+  services.rustdesk-server = {
+    enable = true;
+    openFirewall = true;
+    signal.relayHosts = [ "100.95.221.38" ];
+  };
+
+  # ---------------------------------------------------------------------
+  # KONTENERY, KTÓRE ZOSTAJĄ (brak modułu NixOS)
+  # ---------------------------------------------------------------------
   virtualisation.containers.enable = true;
   virtualisation.oci-containers.backend = "podman";
 
   virtualisation.oci-containers.containers = {
-    qbittorrent = {
-      image = "lscr.io/linuxserver/qbittorrent:latest";
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-        WEBUI_PORT = "8080";
-      };
-      volumes = [
-        "/var/lib/containers/qbittorrent:/config"
-        "/data:/data"
-      ];
-      ports = [
-        "8080:8080"
-        "6881:6881"
-        "6881:6881/udp"
-      ];
-    };
-
-    radarr = {
-      image = "lscr.io/linuxserver/radarr:latest";
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [
-        "/var/lib/containers/radarr:/config"
-        "/data:/data"
-      ];
-      ports = [ "7878:7878" ];
-    };
-
-    sonarr = {
-      image = "lscr.io/linuxserver/sonarr:latest";
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [
-        "/var/lib/containers/sonarr:/config"
-        "/data:/data"
-      ];
-      ports = [ "8989:8989" ];
-    };
-
-    prowlarr = {
-      image = "lscr.io/linuxserver/prowlarr:latest";
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [ "/var/lib/containers/prowlarr:/config" ];
-      ports = [ "9696:9696" ];
-    };
-
-    flaresolverr = {
-      image = "ghcr.io/flaresolverr/flaresolverr:latest";
-      environment = {
-        LOG_LEVEL = "info";
-        TZ = "Europe/Warsaw";
-      };
-      ports = [ "8191:8191" ];
-    };
-
-    jellyseerr = {
-      image = "fallenbagel/jellyseerr:develop";
-      environment = {
-        LOG_LEVEL = "info";
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [ "/var/lib/containers/jellyseerr:/app/config" ];
-      ports = [ "5055:5055" ];
-    };
-
-    bazarr = {
-      image = "lscr.io/linuxserver/bazarr:latest";
-      autoStart = true;
-      ports = [ "6767:6767" ];
-      volumes = [
-        "/var/lib/containers/bazarr:/config"
-        "/data/media:/data/media"
-      ];
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-      };
-    };
-
-    homepage = {
-      image = "ghcr.io/gethomepage/homepage:latest";
-      volumes = [
-        "/var/lib/containers/homepage:/app/config"
-        "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
-      ];
-      ports = [ "3001:3000" ];
-      environment = {
-        HOMEPAGE_ALLOWED_HOSTS = "100.95.221.38:3001,192.168.1.21:3001";
-      };
-    };
-
-    uptime-kuma = {
-      image = "louislam/uptime-kuma:2";
-      volumes = [
-        "/var/lib/containers/uptimekuma:/app/data"
-        "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
-      ];
-      ports = [ "3002:3001" ];
-    };
-
-    vaultwarden = {
-      image = "vaultwarden/server:latest";
-      environment = {
-        TZ = "Europe/Warsaw";
-        SIGNUPS_ALLOWED = "true";
-      };
-      volumes = [ "/var/lib/containers/vaultwarden:/data" ];
-      ports = [ "8222:80" ];
-    };
-
-    syncthing = {
-      image = "lscr.io/linuxserver/syncthing:latest";
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [
-        "/var/lib/containers/syncthing:/config"
-        "/data/syncthing:/data1"
-      ];
-      ports = [
-        "8384:8384"
-        "22000:22000"
-        "22000:22000/udp"
-        "21027:21027/udp"
-      ];
-    };
-
-    rustdesk-hbbs = {
-      image = "rustdesk/rustdesk-server:latest";
-      cmd = [
-        "hbbs"
-        "-r"
-        "100.95.221.38"
-      ];
-      volumes = [ "/var/lib/containers/rustdesk:/root" ];
-      ports = [
-        "21115:21115"
-        "21116:21116"
-        "21116:21116/udp"
-        "21118:21118"
-      ];
-    };
-
-    rustdesk-hbbr = {
-      image = "rustdesk/rustdesk-server:latest";
-      cmd = [ "hbbr" ];
-      volumes = [ "/var/lib/containers/rustdesk:/root" ];
-      ports = [
-        "21117:21117"
-        "21119:21119"
-      ];
-    };
-
-    dozzle = {
-      image = "amir20/dozzle:latest";
-      volumes = [ "/var/run/podman/podman.sock:/var/run/docker.sock:ro" ];
-      ports = [ "8088:8080" ];
-    };
-
-    # === NOWY KONTENER: Jellyfin ===
-    jellyfin = {
-      image = "lscr.io/linuxserver/jellyfin:latest";
-      environment = {
-        PUID = "1000";
-        PGID = "999";
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [
-        "/var/lib/containers/jellyfin:/config"
-        "/data:/data"
-      ];
-      ports = [
-        "8096:8096"
-        "8920:8920"
-        "7359:7359/udp"
-        "1900:1900/udp"
-      ];
-      extraOptions = [
-        "--device=/dev/dri:/dev/dri"
-      ];
-    };
-
-    # === NOWY KONTENER: qui ===
-    qui = {
-      image = "ghcr.io/autobrr/qui:latest";
-      environment = {
-        TZ = "Europe/Warsaw";
-      };
-      volumes = [
-        "/var/lib/containers/qui:/config"
-        "/data:/data"
-      ];
-      ports = [ "7476:7476" ];
-    };
-
     oracle-db = {
       image = "container-registry.oracle.com/database/free:latest";
-      environment = {
-        ORACLE_PWD = "Qwer4321";
-      };
-      volumes = [
-        # Podman sam utworzy wolumen i ogarnie uprawnienia
-        "oracle_data:/opt/oracle/oradata"
-      ];
+      # Hasło w pliku poza /nix/store. Plik: /var/lib/secrets/oracle.env
+      # z jedną linijką: ORACLE_PWD=twoje_haslo
+      environmentFiles = [ "/var/lib/secrets/oracle.env" ];
+      volumes = [ "oracle_data:/opt/oracle/oradata" ];
       ports = [ "1521:1521" ];
       extraOptions = [ "--shm-size=1g" ];
     };
