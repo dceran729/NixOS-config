@@ -446,6 +446,12 @@ in
   services.cliphist.enable = true;
   services.swayosd.enable = true;
 
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true; # Integruje się z Twoim standardowym Bashem
+    nix-direnv.enable = true; # Włącza ultra-szybkie buforowanie środowisk Nix
+  };
+
   home.packages = with pkgs; [
     # --- Narzędzia terminalowe i Nixowe ---
     git
@@ -458,13 +464,14 @@ in
     nil
     nixd
     nix-tree
-    gcc
     sshfs
     yt-dlp
     ffmpeg
+    netcat
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
+    dbeaver-bin
     obsidian
     vesktop
     bitwarden-desktop
@@ -478,21 +485,26 @@ in
     libreoffice
     localsend
     (pkgs.symlinkJoin {
-          name = "xfburn-wrapped";
-          paths = [ pkgs.xfburn ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/xfburn \
-              --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${pkgs.lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+      name = "xfburn-wrapped";
+      paths = [ pkgs.xfburn ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/xfburn \
+          --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${
+            pkgs.lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (
+              with pkgs.gst_all_1;
+              [
                 gstreamer
                 gst-plugins-base
                 gst-plugins-good
                 gst-plugins-bad
                 gst-plugins-ugly
                 gst-libav
-              ])}"
-          '';
-        })
+              ]
+            )
+          }"
+      '';
+    })
 
     # --- Komponenty środowiska graficznego (Hyprland / Wayland) ---
     fuzzel
@@ -847,10 +859,11 @@ U   ESR          ESU   E```
 
 {
   imports = [
-  ./hardware.nix
-  ../../core/default.nix
+    ./hardware.nix
+    ../../core/default.nix
 
   ];
+  boot.kernelModules = [ "pkcs8_key_parser" ]; # ????????
   system.stateVersion = "25.11";
 }
 ```
@@ -1073,41 +1086,77 @@ U   ESR          ESU   E```
   virtualisation.oci-containers.containers = {
     qbittorrent = {
       image = "lscr.io/linuxserver/qbittorrent:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; WEBUI_PORT = "8080"; };
-      volumes = [ "/var/lib/containers/qbittorrent:/config" "/data:/data" ];
-      ports = [ "8080:8080" "6881:6881" "6881:6881/udp" ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+        WEBUI_PORT = "8080";
+      };
+      volumes = [
+        "/var/lib/containers/qbittorrent:/config"
+        "/data:/data"
+      ];
+      ports = [
+        "8080:8080"
+        "6881:6881"
+        "6881:6881/udp"
+      ];
     };
 
     radarr = {
       image = "lscr.io/linuxserver/radarr:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
-      volumes = [ "/var/lib/containers/radarr:/config" "/data:/data" ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
+      volumes = [
+        "/var/lib/containers/radarr:/config"
+        "/data:/data"
+      ];
       ports = [ "7878:7878" ];
     };
 
     sonarr = {
       image = "lscr.io/linuxserver/sonarr:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
-      volumes = [ "/var/lib/containers/sonarr:/config" "/data:/data" ];
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
+      volumes = [
+        "/var/lib/containers/sonarr:/config"
+        "/data:/data"
+      ];
       ports = [ "8989:8989" ];
     };
 
     prowlarr = {
       image = "lscr.io/linuxserver/prowlarr:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
       volumes = [ "/var/lib/containers/prowlarr:/config" ];
       ports = [ "9696:9696" ];
     };
 
     flaresolverr = {
       image = "ghcr.io/flaresolverr/flaresolverr:latest";
-      environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
+      environment = {
+        LOG_LEVEL = "info";
+        TZ = "Europe/Warsaw";
+      };
       ports = [ "8191:8191" ];
     };
 
     jellyseerr = {
       image = "fallenbagel/jellyseerr:develop";
-      environment = { LOG_LEVEL = "info"; TZ = "Europe/Warsaw"; };
+      environment = {
+        LOG_LEVEL = "info";
+        TZ = "Europe/Warsaw";
+      };
       volumes = [ "/var/lib/containers/jellyseerr:/app/config" ];
       ports = [ "5055:5055" ];
     };
@@ -1160,7 +1209,11 @@ U   ESR          ESU   E```
 
     syncthing = {
       image = "lscr.io/linuxserver/syncthing:latest";
-      environment = { PUID = "1000"; PGID = "999"; TZ = "Europe/Warsaw"; };
+      environment = {
+        PUID = "1000";
+        PGID = "999";
+        TZ = "Europe/Warsaw";
+      };
       volumes = [
         "/var/lib/containers/syncthing:/config"
         "/data/syncthing:/data1"
@@ -1175,7 +1228,11 @@ U   ESR          ESU   E```
 
     rustdesk-hbbs = {
       image = "rustdesk/rustdesk-server:latest";
-      cmd = [ "hbbs" "-r" "100.95.221.38" ];
+      cmd = [
+        "hbbs"
+        "-r"
+        "100.95.221.38"
+      ];
       volumes = [ "/var/lib/containers/rustdesk:/root" ];
       ports = [
         "21115:21115"
@@ -1227,12 +1284,27 @@ U   ESR          ESU   E```
     # === NOWY KONTENER: qui ===
     qui = {
       image = "ghcr.io/autobrr/qui:latest";
-      environment = { TZ = "Europe/Warsaw"; };
+      environment = {
+        TZ = "Europe/Warsaw";
+      };
       volumes = [
         "/var/lib/containers/qui:/config"
         "/data:/data"
       ];
       ports = [ "7476:7476" ];
+    };
+
+    oracle-db = {
+      image = "container-registry.oracle.com/database/free:latest";
+      environment = {
+        ORACLE_PWD = "Qwer4321";
+      };
+      volumes = [
+        # Podman sam utworzy wolumen i ogarnie uprawnienia
+        "oracle_data:/opt/oracle/oradata"
+      ];
+      ports = [ "1521:1521" ];
+      extraOptions = [ "--shm-size=1g" ];
     };
   };
 }

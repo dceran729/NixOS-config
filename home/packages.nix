@@ -46,6 +46,7 @@
     yt-dlp
     ffmpeg
     netcat
+    claude-code
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode

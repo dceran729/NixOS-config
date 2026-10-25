@@ -35,6 +35,5 @@
     "d         /data/syncthing                  0775         damian2120  media  -"
     "d         /var/lib/containers/jellyfin     0775         damian2120  media  -"
     "d         /var/lib/containers/qui          0775         damian2120  media  -"
-    "d         /var/lib/containers/oracle       0775         damian2120  media  -"
   ];
 }
