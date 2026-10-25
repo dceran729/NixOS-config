@@ -17,6 +17,4 @@
 
   # Blokady - StyliX ma tego NIE tykać, bo masz tam własne motywy w assetach:
   stylix.targets.grub.enable = false;
-  stylix.targets.vscode.enable = false;
-  stylix.targets.vscodium.enable = false;
 }
