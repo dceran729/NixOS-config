@@ -14,7 +14,4 @@
       package = pkgs.papirus-icon-theme;
     };
   };
-
-  stylix.targets.vscode.enable = false;
-  stylix.targets.vscodium.enable = false;
 }
