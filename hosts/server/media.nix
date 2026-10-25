@@ -23,7 +23,11 @@
   services.jellyfin = {
     enable = true;
     group = "media";
-    openFirewall = true; # 8096/8920 + wykrywanie w LAN (1900/udp, 7359/udp) dla TV
+    openFirewall = true;
+    # układ katalogów jak w kontenerze linuxserver - nic nie trzeba przenosić
+    dataDir = "/var/lib/jellyfin/data";
+    configDir = "/var/lib/jellyfin";
+    logDir = "/var/lib/jellyfin/log";
   };
   users.users.jellyfin.extraGroups = [
     "render"
@@ -52,7 +56,7 @@
 
   services.flaresolverr.enable = true; # port 8191
 
-  services.jellyseerr.enable = true; # port 5055
+  services.seerr.enable = true; # port 5055
 
   # ---------------------------------------------------------------------
   # TORRENTY
@@ -115,6 +119,7 @@
     configDir = "/var/lib/syncthing";
     guiAddress = "127.0.0.1:8384";
     openDefaultPorts = true; # 22000 tcp/udp, 21027 udp
+    extraFlags = [ "--allow-newer-config" ];
   };
 
   services.rustdesk-server = {
