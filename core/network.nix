@@ -3,6 +3,7 @@
 {
   networking.hostName = "DCNIX";
   networking.wireless.iwd.enable = true;
+    services.resolved.enable = true;
 
   # Jeśli używasz NetworkManagera (a używasz go w Waybarze),
   # musisz mu powiedzieć, żeby używał iwd jako silnika do WiFi:
