@@ -94,13 +94,10 @@ in
   # ustawiasz w jego panelu: http://127.0.0.1:8080
   services.qui = {
     enable = true;
-    # Wymagane. Plik z losowym sekretem sesji (sam ciąg znaków, bez nazwy
-    # zmiennej), poza /nix/store. Tworzysz go ręcznie:
-    #   openssl rand -hex 32 | sudo tee /var/lib/secrets/qui-session
     secretFile = "/var/lib/secrets/qui-session";
-    # environment.QUI__HOST = lib.mkForce "0.0.0.0";
+    # Dostępne przez Tailscale; zapora nie wpuszcza do tego portu sieci domowej.
+    settings.host = "0.0.0.0";
   };
-    systemd.services.qui.environment.QUI__HOST = lib.mkForce "0.0.0.0";
   # ---------------------------------------------------------------------
   # PANEL, MONITORING, HASŁA, SYNCHRONIZACJA, ZDALNY PULPIT
   # ---------------------------------------------------------------------
