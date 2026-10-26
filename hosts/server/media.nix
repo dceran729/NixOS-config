@@ -98,8 +98,8 @@ in
     # zmiennej), poza /nix/store. Tworzysz go ręcznie:
     #   openssl rand -hex 32 | sudo tee /var/lib/secrets/qui-session
     secretFile = "/var/lib/secrets/qui-session";
+    environment.QUI__HOST = lib.mkForce "0.0.0.0";
   };
-
   # ---------------------------------------------------------------------
   # PANEL, MONITORING, HASŁA, SYNCHRONIZACJA, ZDALNY PULPIT
   # ---------------------------------------------------------------------
