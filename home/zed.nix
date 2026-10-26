@@ -21,6 +21,19 @@
         # Używamy darmowego wbudowanego Zed AI do podpowiedzi
         inline_completion_provider = "zed";
       };
+
+      # DODANE: Konfiguracja serwera językowego Nix (nil)
+      lsp = {
+        nil = {
+          initializationOptions = {
+            nix = {
+              flake = {
+                autoArchive = true;
+              };
+            };
+          };
+        };
+      };
     };
   };
 }

@@ -1,39 +1,27 @@
 { config, pkgs, ... }:
 
 {
-  # Tworzymy grupę "media", która będzie współdzielona przez Ciebie i kontenery
+  # Grupa "media" współdzielona przez wszystkie usługi i Twoje konto
   users.groups.media = {
     gid = 999;
   };
 
-  # Deklaratywne tworzenie struktury katalogów na dysku
   systemd.tmpfiles.rules = [
     # GŁÓWNE FOLDERY NA PLIKI
-    "d         /data                        0775         root        media  -"
-    "d         /data/torrents               0775         root        media  -"
-    "d         /data/torrents/filmy         0775         root        media  -"
-    "d         /data/torrents/seriale       0775         root        media  -"
-    "d         /data/media                  0775         root        media  -"
-    "d         /data/media/filmy            0775         root        media  -"
-    "d         /data/media/seriale          0775         root        media  -"
+    "d /data                 0775 root       media -"
+    "d /data/torrents        0775 root       media -"
+    "d /data/torrents/filmy  0775 root       media -"
+    "d /data/torrents/seriale 0775 root      media -"
+    "d /data/media           0775 root       media -"
+    "d /data/media/filmy     0775 root       media -"
+    "d /data/media/seriale   0775 root       media -"
+    "d /data/syncthing       0775 damian2120 media -"
 
-    # KATALOGI NA KONFIGURACJE APLIKACJI
-    "d         /var/lib/containers              0755         root        root   -"
+    # Pliki z hasłami (EnvironmentFile) - tylko dla roota, poza /nix/store
+    "d /var/lib/secrets      0700 root       root  -"
 
-    # Podfoldery dla każdego kontenera (z prawami zapisu dla Ciebie - damian2120)
-    "d         /var/lib/containers/qbittorrent  0775         damian2120  media  -"
-    "d         /var/lib/containers/radarr       0775         damian2120  media  -"
-    "d         /var/lib/containers/sonarr       0775         damian2120  media  -"
-    "d         /var/lib/containers/prowlarr     0775         damian2120  media  -"
-    "d         /var/lib/containers/jellyseerr   0775         damian2120  media  -"
-    "d         /var/lib/containers/homepage     0775         damian2120  media  -"
-    "d         /var/lib/containers/uptimekuma   0775         damian2120  media  -"
-    "d         /var/lib/containers/bazarr       0775         damian2120  media  -"
-    "d         /var/lib/containers/vaultwarden  0775         damian2120  media  -"
-    "d         /var/lib/containers/syncthing    0775         damian2120  media  -"
-    "d         /var/lib/containers/rustdesk     0775         damian2120  media  -"
-    "d         /data/syncthing                  0775         damian2120  media  -"
-    "d         /var/lib/containers/jellyfin     0775         damian2120  media  -"
-    "d         /var/lib/containers/qui          0775         damian2120  media  -"
+    # Katalogi /var/lib/containers/* NIE są już tworzone: dane usług trzyma
+    # teraz każdy moduł w swoim /var/lib/<usługa>. Stary katalog zostaje
+    # na dysku jako kopia zapasowa, dopóki go sam nie usuniesz.
   ];
 }
