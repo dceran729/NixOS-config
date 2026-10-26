@@ -89,14 +89,6 @@ in
   };
   networking.firewall.allowedTCPPorts = [ 6881 ];
   networking.firewall.allowedUDPPorts = [ 6881 ];
-  services.qui = {
-    enable = true;
-    # Wymagane. Plik z losowym sekretem sesji (sam ciąg znaków, bez nazwy
-    # zmiennej), poza /nix/store. Tworzysz go ręcznie:
-    #   openssl rand -hex 32 | sudo tee /var/lib/secrets/qui-session
-    secretFile = "/var/lib/secrets/qui-session";
-    # environment.QUI__HOST = lib.mkForce "0.0.0.0";
-  };
   # Moduł qui z nixpkgs (port domyślnie 7476). Połączenie z qBittorrentem
   # ustawiasz w jego panelu: http://127.0.0.1:8080
   services.qui = {
