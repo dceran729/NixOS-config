@@ -986,6 +986,7 @@ U   ESR          ESU   E```
     ./media.nix
     ./qbit-cleanup.nix
     ./caddy.nix
+    ./cleanup.nix
   ];
 
   networking.hostName = "DCSRW";
@@ -1166,7 +1167,7 @@ in
 
   services.flaresolverr.enable = true; # port 8191
 
-  services.jellyseerr = {
+  services.seerr = {
     enable = true; # port 5055
     openFirewall = true; # dostęp z sieci domowej (rodzina)
   };
@@ -1182,17 +1183,14 @@ in
   };
   networking.firewall.allowedTCPPorts = [ 6881 ];
   networking.firewall.allowedUDPPorts = [ 6881 ];
-
   # Moduł qui z nixpkgs (port domyślnie 7476). Połączenie z qBittorrentem
   # ustawiasz w jego panelu: http://127.0.0.1:8080
   services.qui = {
     enable = true;
-    # Wymagane. Plik z losowym sekretem sesji (sam ciąg znaków, bez nazwy
-    # zmiennej), poza /nix/store. Tworzysz go ręcznie:
-    #   openssl rand -hex 32 | sudo tee /var/lib/secrets/qui-session
     secretFile = "/var/lib/secrets/qui-session";
+    # Dostępne przez Tailscale; zapora nie wpuszcza do tego portu sieci domowej.
+    settings.host = "0.0.0.0";
   };
-
   # ---------------------------------------------------------------------
   # PANEL, MONITORING, HASŁA, SYNCHRONIZACJA, ZDALNY PULPIT
   # ---------------------------------------------------------------------
@@ -1458,6 +1456,40 @@ in
 
   # Porty 80/443 nie są otwierane w zaporze: ruch przychodzi przez interfejs
   # tailscale0, który jest zaufany (hosts/server/network.nix).
+}
+```
+
+### Plik: `hosts/server/cleanup.nix`
+```nix
+{ config, lib, pkgs, ... }:
+
+{
+  # Automatyczne sprzątanie starych wersji systemu i pakietów (raz w tygodniu).
+  # Serwer nie miał dotąd żadnego GC: "nh clean" jest tylko w konfiguracji
+  # laptopa (home-manager), więc każde wdrożenie zostawiało stare wersje.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+
+  # Deduplikacja identycznych plików w /nix/store
+  nix.optimise.automatic = true;
+
+  # Mniej wpisów rozruchowych (każdy trzyma starą wersję systemu na dysku)
+  boot.loader.systemd-boot.configurationLimit = 10;
+
+  # Dziennik systemowy: maksymalnie 500 MB
+  environment.etc."systemd/journald.conf.d/10-limit.conf".text = ''
+    [Journal]
+    SystemMaxUse=500M
+  '';
+
+  # Podman: co tydzień usuwa nieużywane (osierocone) obrazy i kontenery
+  virtualisation.podman.autoPrune = {
+    enable = true;
+    dates = "weekly";
+  };
 }
 ```
 

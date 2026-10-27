@@ -47,6 +47,7 @@
     ffmpeg
     netcat
     claude-code
+    openssl
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
