@@ -2,13 +2,12 @@
 
 {
   networking.hostName = "DCNIX";
-  networking.wireless.iwd.enable = true;
+  networking.networkmanager.enable = true;
+  networking.wireless.iwd.enable = false;
     services.resolved.enable = true;
 
   # Jeśli używasz NetworkManagera (a używasz go w Waybarze),
   # musisz mu powiedzieć, żeby używał iwd jako silnika do WiFi:
-  networking.networkmanager.wifi.backend = "iwd";
-
   # ==========================================
   # DODANE: Usługa Tailscale
   # ==========================================
