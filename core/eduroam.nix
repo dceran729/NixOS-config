@@ -41,6 +41,7 @@ in
 
   # Adres IP dla interfejsu eduroam0 (tylko on, reszta zostaje po stronie NetworkManagera)
   systemd.network.enable = true;
+  networking.useDHCP = false; # DHCP robi NetworkManager, a dla eduroam0 networkd
   systemd.network.wait-online.enable = false;
   systemd.network.networks."40-eduroam" = {
     matchConfig.Name = "eduroam0";
