@@ -48,6 +48,7 @@
     netcat
     claude-code
     openssl
+    file
 
     # --- Aplikacje GUI (Programy użytkowe) ---
     vscode
