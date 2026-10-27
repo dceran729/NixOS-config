@@ -17,5 +17,6 @@
     ./thunar.nix
     ./ollama.nix
     ./power.nix
+    ./eduroam.nix
   ];
 }

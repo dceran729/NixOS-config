@@ -94,6 +94,7 @@
     "interval": 3,
     "spacing": 1,
     "on-click": "ghostty -e impala",
+    "on-click-right": "$HOME/.config/Scripts/eduroam.sh toggle",
   },
 
   "battery": {
