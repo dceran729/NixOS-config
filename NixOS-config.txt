@@ -1,0 +1,82 @@
+========================================
+STRUKTURA KATALOGÓW
+========================================
+.
+├── assets
+│   ├── Hyprland-Config
+│   │   ├── hyprland.conf
+│   │   └── hyprpaper.conf
+│   ├── Rofi-Theme
+│   │   └── files
+│   │       ├── cliphist.rasi
+│   │       ├── config.rasi
+│   │       ├── launcher.rasi
+│   │       └── powermenu.rasi
+│   ├── Scripts
+│   │   ├── brightness.sh
+│   │   ├── codebase.sh
+│   │   ├── eduroam.sh
+│   │   ├── launcher.sh
+│   │   ├── launch-walker.sh
+│   │   ├── mic.sh
+│   │   └── powermenu.sh
+│   ├── stylix.txt
+│   ├── SwayOSD
+│   │   ├── config.toml
+│   │   └── style.css
+│   ├── Walker
+│   │   ├── config.toml
+│   │   └── custom.css
+│   ├── WALLPAPER_HEAVEN.txt
+│   └── Waybar-Config
+│       ├── config.jsonc
+│       └── style.css
+├── core
+│   ├── audio.nix
+│   ├── default.nix
+│   ├── fonts.nix
+│   ├── grub.nix
+│   ├── keyboard.nix
+│   ├── locale.nix
+│   ├── network.nix
+│   ├── ollama.nix
+│   ├── packages.nix
+│   ├── power.nix
+│   ├── sddm.nix
+│   ├── system.nix
+│   ├── theme.nix
+│   ├── thunar.nix
+│   ├── users.nix
+│   └── wayland.nix
+├── flake.nix
+├── home
+│   ├── default.nix
+│   ├── desktop_entries.nix
+│   ├── ghostty.nix
+│   ├── hyprland.nix
+│   ├── packages.nix
+│   ├── rofi.nix
+│   ├── scripts.nix
+│   ├── theme.nix
+│   ├── walker.nix
+│   ├── waybar.nix
+│   └── zed.nix
+├── hosts
+│   ├── laptop
+│   │   ├── default.nix
+│   │   └── hardware.nix
+│   └── server
+│       ├── caddy.nix
+│       ├── cleanup.nix
+│       ├── default.nix
+│       ├── hardware.nix
+│       ├── media.nix
+│       ├── network.nix
+│       ├── qbit-cleanup.nix
+│       └── storage.nix
+└── nixos_konfiguracja_dla_ai.txt
+
+14 directories, 60 files
+
+
+
