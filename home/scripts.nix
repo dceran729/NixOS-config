@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  home.packages = with pkgs; [ iw wpa_supplicant dhcpcd ];
+
   home.file = {
     # Skrypt jasności
     ".config/Scripts/brightness.sh" = {
@@ -25,6 +27,11 @@
 
     ".config/Scripts/launch-walker.sh" = {
       source = ../assets/Scripts/launch-walker.sh;
+      executable = true;
+    };
+
+    ".config/Scripts/eduroam.sh" = {
+      source = ../assets/Scripts/eduroam.sh;
       executable = true;
     };
 
