@@ -28,11 +28,6 @@
       executable = true;
     };
 
-    ".config/Scripts/eduroam.sh" = {
-      source = ../assets/Scripts/eduroam.sh;
-      executable = true;
-    };
-
     # KLUCZOWE: Plik konfiguracyjny znoszący limit 5% i włączający tekst procentów
     ".config/swayosd/config.toml" = {
       source = ../assets/SwayOSD/config.toml;
