@@ -35,6 +35,10 @@
       executable = true;
     };
 
+    ".config/Scripts/codebase.sh" = {
+      source = ../assets/Scripts/codebase.sh;
+      executable = true;
+    };
     # KLUCZOWE: Plik konfiguracyjny znoszący limit 5% i włączający tekst procentów
     ".config/swayosd/config.toml" = {
       source = ../assets/SwayOSD/config.toml;
