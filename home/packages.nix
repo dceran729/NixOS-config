@@ -22,7 +22,7 @@
   # programs.localsend.enable = true;
 
   services.cliphist.enable = true;
-  servises.syncthing.enable = true;
+  services.syncthing.enable = true;
   services.swayosd.enable = true;
 
   programs.direnv = {
