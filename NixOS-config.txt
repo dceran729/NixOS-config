@@ -2938,7 +2938,7 @@ in
           format = { timeStyle = "short"; hourCycle = "h23"; };
         }; }
       { resources = { cpu = true; memory = true; disk = "/"; label = "System"; }; }
-      { resources = { disk = "/data"; label = "Dane"; }; }
+      # { resources = { disk = "/data"; label = "Dane"; }; }
       { search = { provider = "google"; target = "_blank"; }; }
     ];
 
