@@ -2312,6 +2312,7 @@ PLIK: home/packages.nix
   # programs.localsend.enable = true;
 
   services.cliphist.enable = true;
+  services.syncthing.enable = true;
   services.swayosd.enable = true;
 
   programs.direnv = {
