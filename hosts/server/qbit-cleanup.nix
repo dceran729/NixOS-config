@@ -27,8 +27,8 @@
 
       # metaDL: brak metadanych dłużej niż 2 min od dodania
       # stalledDL: brak jakiejkolwiek aktywności od 2 min
-      META_TIMEOUT=120
-      STALL_TIMEOUT=120
+      META_TIMEOUT=300
+      STALL_TIMEOUT=180
       # Minimalna liczba węzłów DHT, poniżej której qBit uznajemy za "jeszcze się rozkręca"
       MIN_DHT_NODES=10
 
