@@ -10,6 +10,7 @@
   boot.kernelParams = [ "resume_offset=16786688" ];
 
   services.power-profiles-daemon.enable = true;
+  security.pam.services.hyprlock = {};
 
   # ROZWIĄZANIE BŁĘDU ZAMRAŻANIA (systemd v256+)
   systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
@@ -19,8 +20,6 @@
   services.logind.settings.Login = {
     HandlePowerKey = "suspend-then-hibernate";
     HandleLidSwitch = "suspend-then-hibernate";
-    IdleAction = "suspend-then-hibernate";
-    IdleActionSec = "20m";
   };
 
   systemd.sleep.settings.Sleep = {

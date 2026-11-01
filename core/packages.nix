@@ -8,6 +8,8 @@
     dockerCompat = true;
   };
 
+  services.elephant.enable = true;
+
   environment.systemPackages = with pkgs; [
     # --- Zależności interfejsu (SDDM) ---
     kdePackages.qtdeclarative

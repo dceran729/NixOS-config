@@ -12,6 +12,7 @@
     ./scripts.nix
     ./walker.nix
     ./zed.nix
+    ./lock.nix
   ];
 
   programs.bash.enable = true;
