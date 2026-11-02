@@ -98,24 +98,20 @@ in
       };
 
       listener = [
-        {   # 2:30 - przyciemnij ekran
-          timeout = 150;
-          on-timeout = "brightnessctl -s set 10%";
-          on-resume = "brightnessctl -r";
-        }
-        {   # 5:00 - zablokuj
+        {
+          # Po 5 minutach bezczynności: zablokuj i wygaś ekran.
+          # sleep 1 daje hyprlockowi chwilę na narysowanie się przed wygaszeniem,
+          # dzięki czemu po wybudzeniu od razu widzisz ekran blokady.
           timeout = 300;
-          on-timeout = "loginctl lock-session";
-        }
-        {   # 5:30 - wyłącz ekran
-          timeout = 330;
-          on-timeout = dpmsOff;
+          on-timeout = "loginctl lock-session && sleep 1 && ${dpmsOff}";
           on-resume = dpmsOn;
         }
-        {   # 20:00 - to samo co miałeś w logind
-          timeout = 1200;
-          on-timeout = "systemctl suspend-then-hibernate";
-        }
+
+        # Opcjonalnie: uśpienie po 20 minutach (odkomentuj, jeśli chcesz)
+        # {
+        #   timeout = 1200;
+        #   on-timeout = "systemctl suspend-then-hibernate";
+        # }
       ];
     };
   };
