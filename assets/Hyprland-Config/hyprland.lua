@@ -170,7 +170,7 @@ hl.config({
         mfact = 0.5,
         new_on_active = "after",
         new_on_top = false,
-        special_scale_factor = 1.0,
+        --special_scale_factor = 1.0,
     },
 
     scrolling = {
