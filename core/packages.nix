@@ -10,6 +10,13 @@
 
   services.elephant.enable = true;
 
+  # Elephant odpala "sh -c wl-copy ..." przy wyborze wpisu ze schowka,
+  # a domyślny PATH jego usługi nie ma ani sh, ani wl-copy.
+  systemd.user.services.elephant.path = with pkgs; [
+    bash          # dostarcza "sh"
+    wl-clipboard  # wl-copy
+  ];
+
   environment.systemPackages = with pkgs; [
     # --- Zależności interfejsu (SDDM) ---
     kdePackages.qtdeclarative
