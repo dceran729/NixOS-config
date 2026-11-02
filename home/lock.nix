@@ -4,6 +4,10 @@ let
   c = config.lib.stylix.colors;          # kolory z Twojego schematu onedark
   font = "JetBrainsMono Nerd Font";
   hyprlock = lib.getExe config.programs.hyprlock.package;
+
+  # Hyprland 0.57+: hyprctl dispatch przyjmuje wyrażenie Lua (stare "dpms off" już nie działa)
+  dpmsOff = "hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
+  dpmsOn  = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
 in
 {
   # Stylix ma własny target hyprlocka (kolory + tapeta) -
@@ -29,7 +33,8 @@ in
 
       background = [{
         monitor = "";
-        # plik z obrazem, nie "screenshot" - patrz uwaga niżej
+        # plik z obrazem, nie "screenshot" (screencopy wymagałby uprawnień
+        # przy ecosystem:enforce_permissions = true)
         path = "${../assets/Wallpapers/a_planet_in_space_with_clouds.jpg}";
         blur_passes = 3;
         blur_size = 6;
@@ -89,7 +94,7 @@ in
       general = {
         lock_cmd = "pidof hyprlock || ${hyprlock}";  # nie startuj dwóch instancji
         before_sleep_cmd = "loginctl lock-session";  # blokada przed uśpieniem/pokrywą
-        after_sleep_cmd = "hyprctl dispatch dpms on";
+        after_sleep_cmd = dpmsOn;
       };
 
       listener = [
@@ -104,8 +109,8 @@ in
         }
         {   # 5:30 - wyłącz ekran
           timeout = 330;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
+          on-timeout = dpmsOff;
+          on-resume = dpmsOn;
         }
         {   # 20:00 - to samo co miałeś w logind
           timeout = 1200;

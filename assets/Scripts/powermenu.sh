@@ -34,6 +34,6 @@ case ${chosen} in
         systemctl reboot
         ;;
     $logout)
-        hyprctl dispatch exit
+        hyprctl dispatch 'hl.dsp.exit()'
         ;;
 esac
