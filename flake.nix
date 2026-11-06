@@ -5,56 +5,35 @@
     # Używamy wersji unstable, bo Hyprland/Niri tam działają najlepiej
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # Pobieramy Home Managera i każemy mu używać tych samych pakietów co system
+    # Home Manager używa tych samych pakietów co system
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # 1. DODAJEMY INPUT STYLIXA
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  # 2. PRZEKAZUJEMY STYLIXA DO OUTPUTS
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      stylix,
-      ...
-    }@inputs:
+    { nixpkgs, ... }@inputs:
     {
       nixosConfigurations = {
 
-        # Twój główny laptop (bez zmian)
+        # Laptop (Hyprland, Home Manager, Stylix - moduły podpina hosts/laptop)
         DCNIX = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; }; # Przekazujemy "inputs" dalej do modułów
-          modules = [
-            ./hosts/laptop/default.nix
-            stylix.nixosModules.stylix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              # Wskazujemy główny plik konfiguracji Home Managera
-              home-manager.users.damian2120 = import ./home/default.nix;
-              home-manager.backupFileExtension = "backup";
-            }
-          ];
+          specialArgs = { inherit inputs; };
+          modules = [ ./hosts/laptop/default.nix ];
         };
 
-        # DODANY SERWER: Lekka instalacja, bez środowiska graficznego
+        # Serwer: lekka instalacja, bez środowiska graficznego
         DCSRW = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/server/default.nix
-          ];
+          modules = [ ./hosts/server/default.nix ];
         };
 
       };

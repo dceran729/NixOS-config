@@ -5,10 +5,12 @@
     ./hardware.nix
     ./storage.nix
     ./network.nix
-    ./media.nix
-    ./qbit-cleanup.nix
-    ./caddy.nix
     ./cleanup.nix
+
+    ../../modules/nixos/common
+    ../../modules/nixos/services/media.nix
+    ../../modules/nixos/services/qbit-cleanup.nix
+    ../../modules/nixos/services/caddy.nix
   ];
 
   networking.hostName = "DCSRW";
@@ -32,17 +34,13 @@
     "damian2120"
   ];
 
-  # TWOJE KONTO (dodano dostęp do grup video i render dla QuickSync!)
-  users.users.damian2120 = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "media"
-      "video"
-      "render"
-    ];
-  };
+  # Konto (isNormalUser, wheel, networkmanager) jest w modules/nixos/common/user.nix.
+  # Tutaj tylko dodatkowe grupy (video i render dla QuickSync!)
+  users.users.damian2120.extraGroups = [
+    "media"
+    "video"
+    "render"
+  ];
 
   # ---------------------------------------------------
   # INTEL QUICKSYNC (Akceleracja sprzętowa)

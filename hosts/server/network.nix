@@ -1,12 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  # 1. TAILSCALE - Dostęp zdalny z każdego miejsca na świecie
-  services.tailscale.enable = true;
-  networking.firewall.trustedInterfaces = [ "tailscale0" "podman0" ];
-  networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
+  # Tailscale (enable, port UDP, tailscale0 jako zaufany) jest w modules/nixos/common/tailscale.nix.
+  # Tutaj tylko to, co dotyczy serwera: kontenery Podmana też są zaufane.
+  networking.firewall.trustedInterfaces = [ "podman0" ];
 
-  # 2. ADGUARD HOME - Twój prywatny DNS i bloker reklam
+  # ADGUARD HOME - prywatny DNS i bloker reklam
   services.adguardhome = {
     enable = true;
     openFirewall = true; # Automatycznie otwiera porty: 53 (DNS) i 3000 (Panel WWW)

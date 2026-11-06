@@ -1,0 +1,28 @@
+{ lib, pkgs, ... }:
+
+let
+  Grub-Theme = pkgs.stdenv.mkDerivation {
+    name = "Grub-Theme";
+    src = lib.fileset.toSource {
+      root = ./.;
+      fileset = lib.fileset.difference ./. ./default.nix;
+    };
+
+    installPhase = ''
+      # Tworzymy główny folder w Nix Store
+      mkdir -p $out
+      # Kopiujemy do niego całą zawartość motywu (tam, gdzie jest theme.txt)
+      cp -r ./* $out/
+    '';
+  };
+in
+{
+  # Podpinamy motyw do ustawień bootloadera
+  boot.loader.grub = {
+    enable = true;
+    theme = "${Grub-Theme}";
+    device = "nodev";
+    efiSupport = true;
+  };
+  boot.loader.efi.canTouchEfiVariables = true;
+}
