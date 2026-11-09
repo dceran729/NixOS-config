@@ -10,8 +10,8 @@
 local mainMod     = "SUPER"
 local terminal    = "ghostty"
 local fileManager = "thunar"
-local menu        = "~/.config/Scripts/launcher.sh"
-local powermenu   = "~/.config/Scripts/powermenu.sh"
+local menu        = "launcher.sh"
+local powermenu   = "powermenu.sh"
 local browser     = "firefox"
 
 ---------------
@@ -345,8 +345,8 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Jasność (bindel = locked + repeating)
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/Scripts/brightness.sh up"),   { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/Scripts/brightness.sh down"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightness.sh up"),   { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightness.sh down"), { locked = true, repeating = true })
 
 -- Głośność
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume raise"),       { locked = true, repeating = true })
@@ -354,7 +354,7 @@ hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume 
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
 
 -- Mikrofon
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("~/.config/Scripts/mic.sh"), { locked = true })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("mic.sh"), { locked = true })
 hl.bind("ALT + XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --input-volume raise --max-volume 100"), { locked = true, repeating = true })
 hl.bind("ALT + XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --input-volume lower"),                  { locked = true, repeating = true })
 
@@ -379,4 +379,4 @@ hl.bind("CTRL + Print", hl.dsp.exec_cmd(
 ))
 
 -- Schowek (Walker + Elephant)
-hl.bind("SUPER + CTRL + V", hl.dsp.exec_cmd("~/.config/Scripts/launch-walker.sh -m clipboard"), { description = "Clipboard manager" })
+hl.bind("SUPER + CTRL + V", hl.dsp.exec_cmd("launch-walker.sh -m clipboard"), { description = "Clipboard manager" })
