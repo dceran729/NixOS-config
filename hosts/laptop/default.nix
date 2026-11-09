@@ -20,7 +20,6 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
-    # Główny plik konfiguracji Home Managera
     users.damian2120 = import ../../modules/home/default.nix;
   };
 

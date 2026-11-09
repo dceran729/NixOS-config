@@ -1,34 +1,35 @@
 { config, pkgs, ... }:
 
 {
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-bin;
-    configPath = "${config.xdg.configHome}/mozilla/firefox";
-    profiles.damian2120 = {
-      id = 0;
-      isDefault = true;
+  programs = {
+    direnv = {
+      enable = true;
+      enableBashIntegration = true; # Integruje się z Twoim standardowym Bashem
+      nix-direnv.enable = true; # Włącza ultra-szybkie buforowanie środowisk Nix
     };
-    nativeMessagingHosts = [ pkgs.firefoxpwa ];
+
+    firefox = {
+      enable = true;
+      package = pkgs.firefox-bin;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
+      profiles.damian2120 = {
+        id = 0;
+        isDefault = true;
+      };
+      nativeMessagingHosts = [ pkgs.firefoxpwa ];
+    };
+
+    nh = {
+      enable = true;
+      clean.enable = true;
+      clean.extraArgs = "--keep-since 7d --keep 3"; # Automatyczne sprzątanie starych generacji
+      flake = "/home/damian2120/NixOS-config"; # Definiuje domyślną ścieżkę do Flake
+    };
   };
 
-  programs.nh = {
-    enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 7d --keep 3"; # Automatyczne sprzątanie starych generacji
-    flake = "/home/damian2120/NixOS-config"; # Definiuje domyślną ścieżkę do Flake
-  };
-
-  # programs.localsend.enable = true;
-
-  services.cliphist.enable = true;
-  services.syncthing.enable = true;
-  services.swayosd.enable = true;
-
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true; # Integruje się z Twoim standardowym Bashem
-    nix-direnv.enable = true; # Włącza ultra-szybkie buforowanie środowisk Nix
+  services = {
+    swayosd.enable = true;
+    syncthing.enable = true;
   };
 
   home.packages = with pkgs; [
@@ -45,14 +46,12 @@
     nix-tree
     sshfs
     yt-dlp
-    ffmpeg
     netcat
     claude-code
     openssl
     file
 
     # --- Aplikacje GUI (Programy użytkowe) ---
-    vscode
     dbeaver-bin
     obsidian
     vesktop
@@ -65,7 +64,6 @@
     mousepad
     google-chrome
     libreoffice
-    localsend
     (pkgs.symlinkJoin {
       name = "xfburn-wrapped";
       paths = [ pkgs.xfburn ];

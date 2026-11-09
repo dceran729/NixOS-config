@@ -17,7 +17,10 @@ let
 in
 {
   # Dodajemy motyw do pakietów systemowych
-  environment.systemPackages = [ SDDM-Theme ];
+  environment.systemPackages = [
+    SDDM-Theme
+    pkgs.kdePackages.qtdeclarative
+  ];
 
   services.displayManager.sddm = {
     enable = true;

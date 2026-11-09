@@ -1,6 +1,5 @@
 { config, pkgs, ... }:
 {
-  # Przeniesione z hardware.nix
   swapDevices = [ {
     device = "/var/lib/swapfile";
     size = 16 * 1024;

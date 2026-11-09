@@ -9,5 +9,7 @@
   home.packages = with pkgs; [
     hyprlauncher
     hyprlock
+    # hyprpaper
+    #
   ];
 }

@@ -14,8 +14,6 @@
   ];
 
   networking.hostName = "DCSRW";
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.powersave = false;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

@@ -17,16 +17,15 @@
     wl-clipboard  # wl-copy
   ];
 
-  environment.systemPackages = with pkgs; [
-    # --- Zależności interfejsu (SDDM) ---
-    kdePackages.qtdeclarative
+  programs.localsend = {
+    enable = true;
+    openFirewall = true; # port 53317 dla LocalSend
+  };
 
-    # --- Narzędzia systemowe i multimedialne ---
+  environment.systemPackages = with pkgs; [
     brightnessctl # Kontrola jasności z poziomu kernela
     playerctl # Globalna kontrola multimediów (klawisze funkcyjne)
     wireplumber # Serwer sesji audio (niezbędny do działania PipeWire)
     ffmpeg # Biblioteki dekodowania wideo (potrzebne systemowo)
-    # --- Narzędzia diagnostyczne ---
-    nix-output-monitor # Ładniejsze wyświetlanie postępu budowania (np. polecenie 'nom')
-  ];
+    ];
 }

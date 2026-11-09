@@ -19,9 +19,5 @@
 
     # Pliki z hasłami (EnvironmentFile) - tylko dla roota, poza /nix/store
     "d /var/lib/secrets      0700 root       root  -"
-
-    # Katalogi /var/lib/containers/* NIE są już tworzone: dane usług trzyma
-    # teraz każdy moduł w swoim /var/lib/<usługa>. Stary katalog zostaje
-    # na dysku jako kopia zapasowa, dopóki go sam nie usuniesz.
   ];
 }

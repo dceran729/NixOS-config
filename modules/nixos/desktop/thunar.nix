@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # 1. Główny program i jego wtyczki
   programs.thunar = {
     enable = true;
     plugins = with pkgs; [
@@ -9,12 +8,11 @@
       thunar-volman
     ];
   };
+
   environment.systemPackages = with pkgs; [
-    # --- Backend (obsługa formatów) ---
     unzip
     p7zip
     unrar
-
     file-roller
   ];
 
