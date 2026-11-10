@@ -1,7 +1,22 @@
 { ... }:
 
 {
-  programs.bash.enable = true;
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+      PS1='\[\e[1;32m\]\w ❯\[\e[0m\]'
+    '';
+  };
+
+  programs.readline = {
+    enable = true;
+    variables = {
+      completion-ignore-case = true;   # "doc" uzupełni "Documents"
+      completion-map-case    = true;   # "-" i "_" traktowane tak samo
+      show-all-if-ambiguous  = true;   # lista opcji od razu po jednym Tabie
+      colored-stats          = true;   # kolory jak w ls
+    };
+  };
 
   home.shellAliases = {
     r = "git -C ~/NixOS-config add . && nh os test";

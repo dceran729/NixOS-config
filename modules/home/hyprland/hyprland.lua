@@ -270,8 +270,9 @@ hl.bind(mainMod .. " + SHIFT + K", hl.dsp.exec_cmd("firefoxpwa site launch 01KXC
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("localsend_app"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("firefoxpwa site launch 01KXGE92QTY967Q9R6PRYKBNEK"))  -- Gmail
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd([[google-chrome-stable --app="https://www.netflix.com"]]))
+hl.bind(mainMod .. " + SHIFT + O", hl.dsp.exec_cmd("obsidian"))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("firefoxpwa site launch 01KXGE7F4WDSED8ZDNMDXWHWBM"))  -- Gdrive
-hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("firefoxpwa site launch 01KXGEJXRN8BZDN7T6E3YRKCMG"))  -- Messenger
+hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("firefoxpwa site launch 01KXGEJXRN8BZDN7T6E3YRKCMG")) -- Messenger
 hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("vesktop"))
 hl.bind(mainMod .. " + SHIFT + Y", hl.dsp.exec_cmd([[google-chrome-stable --app="https://www.youtube.com"]]))
 
