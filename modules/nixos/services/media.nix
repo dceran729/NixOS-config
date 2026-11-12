@@ -140,6 +140,8 @@ in
       { ${gMedia} = [
           (svc { name = "Jellyfin"; port = 8096; icon = "jellyfin.svg";   desc = "Filmy i seriale"; })
           (svc { name = "Seerr";    port = 5055; icon = "jellyseerr.svg"; desc = "Prośby o nowe tytuły"; })
+          (svc { name = "BookOrbit"; port = 3011; icon = "mdi-book-open-page-variant"; desc = "E-booki"; })
+          (svc { name = "Audiobookshelf"; port = 13378; icon = "audiobookshelf.svg"; desc = "Audiobooki"; })
         ]; }
       { ${gAuto} = [
           (svc { name = "Radarr";   port = 7878; icon = "radarr.svg";   desc = "Filmy"; })
@@ -149,6 +151,7 @@ in
         ]; }
       { ${gDl} = [
           (svc { name = "qBittorrent"; port = 8080; icon = "qbittorrent.svg"; desc = "Torrenty"; })
+          (svc { name = "Shelfmark";   port = 8084; icon = "mdi-download";    desc = "Pobieranie e-booków"; })
           (svc { name = "qui";         port = 7476; icon = "autobrr.png";     desc = "Panel qBittorrenta"; })
           (svc { name = "Syncthing";   port = 8384; icon = "syncthing.svg";   desc = "Synchronizacja"; })
         ]; }
