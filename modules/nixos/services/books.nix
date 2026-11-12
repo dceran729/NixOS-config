@@ -22,8 +22,9 @@
   services.shelfmark = {
     enable = true;
     environment = {
-      SHELFMARK_DOWNLOAD_DIR = "/data/books";
-    };
+          SHELFMARK_DOWNLOAD_DIR = "/data/books";
+          HOST = "0.0.0.0"; # <--- To pozwala na połączenia z zewnątrz
+        };
   };
 
   services.audiobookshelf = {
