@@ -6,19 +6,41 @@ let
   # ==========================================
   # Fork esreddy2, przypięty do konkretnego commita (nic nie zmieni się samo).
   #
-  # Hash policzysz tak (wynik "hash" wklej niżej zamiast lib.fakeHash):
-  #   nix store prefetch-file --json https://raw.githubusercontent.com/esreddy2/bookorbit-plugin-shelfmark/719358b8ceca6deb76d994b302e91d5f0f8748ae/index.mjs
+  # Przed zmianą commita policz nowy hash:
+  #   nix store prefetch-file --json https://raw.githubusercontent.com/esreddy2/bookorbit-plugin-shelfmark/<COMMIT>/index.mjs
   #
-  # Przed pierwszym użyciem przejrzyj index.mjs: plugin działa wewnątrz
-  # procesu BookOrbita i zna klucz API Shelfmarka. Wyszukaj też "update" -
-  # jeśli autoaktualizacje da się wyłączyć w pliku (README forka podaje
-  # "update: null"), napisz, to dopiszę łatkę.
+  # Plugin działa wewnątrz procesu BookOrbita i zna klucz API Shelfmarka,
+  # więc po każdej zmianie commita przejrzyj index.mjs.
   shelfmarkPluginRev = "719358b8ceca6deb76d994b302e91d5f0f8748ae";
 
-  shelfmarkPlugin = pkgs.fetchurl {
+  shelfmarkPluginSrc = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/esreddy2/bookorbit-plugin-shelfmark/${shelfmarkPluginRev}/index.mjs";
     hash = "sha256-RnnW8TAtlOPN0+wfrcMDRChM56oE1fa8+TW06MzunSE=";
   };
+
+  # Przełącznik łatki. Ustaw na false, jeśli kiedyś wtyczka sama poradzi
+  # sobie z tytułami z LibGena (np. po zmianie commita).
+  patchLibgenTitles = true;
+
+  # Łatka: LibGen dokleja do tytułów śmieci w stylu "b f 5602803", przez co
+  # funkcja dopasowania tytułu w pluginie odrzuca wszystkie wydania
+  # (title_mismatch). Łatka obcina ten ogon tylko na potrzeby porównania.
+  # --replace-fail przerwie build, jeśli kod pluginu wygląda inaczej.
+  shelfmarkPluginPatched = pkgs.runCommand "bookorbit-shelfmark-index.mjs" { } ''
+    cp ${shelfmarkPluginSrc} $out
+    chmod +w $out
+    substituteInPlace $out \
+      --replace-fail "const relTitle = rel.title" "const relTitle = stripReleaseJunk(rel.title)"
+    cat >> $out <<'EOF'
+
+    function stripReleaseJunk(t) {
+      return String(t || "").replace(/\s+b\s+f\s+\d+\s*$/i, "");
+    }
+    EOF
+    grep -q stripReleaseJunk $out
+  '';
+
+  shelfmarkPlugin = if patchLibgenTitles then shelfmarkPluginPatched else shelfmarkPluginSrc;
 
   # Ścieżka musi zgadzać się z katalogami w storage.nix.
   shelfmarkPluginDir = "/var/lib/bookorbit/plugins/indexers/shelfmark";
@@ -77,9 +99,9 @@ in
         ReadWritePaths = [ "/data/shelfmark" ];
       };
 
-      # Przy każdym starcie BookOrbita wgrywamy przypiętą wersję pluginu.
-      # Prefiks "+" uruchamia komendę jako root, poza ograniczeniami usługi
-      # (ProtectSystem itp.), więc zapis do /var/lib działa zawsze.
+      # Przy każdym starcie BookOrbita wgrywamy przypiętą (i załataną) wersję
+      # pluginu. Prefiks "+" uruchamia komendę jako root, poza ograniczeniami
+      # usługi (ProtectSystem itp.), więc zapis do /var/lib działa zawsze.
       bookorbit.serviceConfig.ExecStartPre = [
         "+${pkgs.coreutils}/bin/install -D -m 0644 -o bookorbit -g media ${shelfmarkPlugin} ${shelfmarkPluginDir}/index.mjs"
       ];
