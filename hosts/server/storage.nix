@@ -19,6 +19,7 @@
     "d /data/media/ksiazki       0775 root media -"
     "d /data/media/audiobooki    0775 root media -"
     "d /data/books               0775 root media -"
+    "d /data/bookdock        2775 root media -"
 
     # Pliki z hasłami (EnvironmentFile) - tylko dla roota, poza /nix/store
     "d /var/lib/secrets      0700 root       root  -"
