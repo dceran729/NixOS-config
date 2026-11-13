@@ -6,20 +6,18 @@ let
   # ==========================================
   # Fork esreddy2, przypięty do konkretnego commita (nic nie zmieni się samo).
   #
-  # 1. Commit sprawdzisz tak:
-  #      git ls-remote https://github.com/esreddy2/bookorbit-plugin-shelfmark HEAD
-  # 2. Hash policzysz tak (wynik "hash" wklej niżej):
-  #      nix store prefetch-file --json https://raw.githubusercontent.com/esreddy2/bookorbit-plugin-shelfmark/<COMMIT>/index.mjs
-  #    albo zostaw lib.fakeHash - pierwszy build wypisze prawidłowy.
-  # 3. Przed pierwszym użyciem otwórz index.mjs i przejrzyj go: plugin działa
-  #    wewnątrz procesu BookOrbita i zna klucz API Shelfmarka. Wyszukaj też
-  #    "update" - jeśli ustawienia autoaktualizacji da się wyłączyć w pliku
-  #    (README forka podaje "update: null"), napisz, to dopiszę łatkę.
-  shelfmarkPluginRev = "<COMMIT>";
+  # Hash policzysz tak (wynik "hash" wklej niżej zamiast lib.fakeHash):
+  #   nix store prefetch-file --json https://raw.githubusercontent.com/esreddy2/bookorbit-plugin-shelfmark/719358b8ceca6deb76d994b302e91d5f0f8748ae/index.mjs
+  #
+  # Przed pierwszym użyciem przejrzyj index.mjs: plugin działa wewnątrz
+  # procesu BookOrbita i zna klucz API Shelfmarka. Wyszukaj też "update" -
+  # jeśli autoaktualizacje da się wyłączyć w pliku (README forka podaje
+  # "update: null"), napisz, to dopiszę łatkę.
+  shelfmarkPluginRev = "719358b8ceca6deb76d994b302e91d5f0f8748ae";
 
   shelfmarkPlugin = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/esreddy2/bookorbit-plugin-shelfmark/${shelfmarkPluginRev}/index.mjs";
-    hash = lib.fakeHash;
+    hash = "sha256-RnnW8TAtlOPN0+wfrcMDRChM56oE1fa8+TW06MzunSE=";
   };
 
   # Ścieżka musi zgadzać się z katalogami w storage.nix.
