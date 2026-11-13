@@ -21,7 +21,6 @@
 
   services.shelfmark = {
     enable = true;
-    group = "media";
     environment = {
       # Pobrane książki trafiają do Book Dock BookOrbita (folder z storage.nix)
       INGEST_DIR = "/data/bookdock";
@@ -46,8 +45,12 @@
       serviceConfig.UMask = lib.mkForce "0002";
     }))
 
-    # Nowe usługi
+    # Nowe usługi i dodatkowe ustawienia
     {
+      # Moduł Shelfmarka nie ma opcji "group", więc dajemy mu grupę media
+      # jako dodatkową (zapis do /data/bookdock).
+      shelfmark.serviceConfig.SupplementaryGroups = [ "media" ];
+
       bookorbit-db-setup = {
         description = "Wymuszenie rozszerzeń bazy danych dla BookOrbit";
         wantedBy = [ "multi-user.target" ];
