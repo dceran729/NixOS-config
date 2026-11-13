@@ -49,8 +49,11 @@
     {
       # Moduł Shelfmarka nie ma opcji "group", więc dajemy mu grupę media
       # jako dodatkową (zapis do /data/bookdock).
-      shelfmark.serviceConfig.SupplementaryGroups = [ "media" ];
-
+      shelfmark.serviceConfig = {
+        SupplementaryGroups = [ "media" ];
+        # ProtectSystem=strict: pozwól zapisywać tylko do Book Dock
+        ReadWritePaths = [ "/data/bookdock" ];
+      };
       bookorbit-db-setup = {
         description = "Wymuszenie rozszerzeń bazy danych dla BookOrbit";
         wantedBy = [ "multi-user.target" ];
