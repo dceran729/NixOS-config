@@ -20,16 +20,6 @@
     "d /data/media/audiobooki    0775 root media -"
     "d /data/books               0775 root media -"
     "d /data/bookdock        2775 root media -"
-    "d /data/shelfmark       2775 root media -"
-
-    # KATALOGI PLUGINÓW BOOKORBITA
-    # Katalog główny BookOrbita zarządza jego moduł, więc tu go tylko
-    # zakładamy, jeśli nie istnieje, bez zmiany właściciela i uprawnień ("-").
-    # Sam plik pluginu wgrywa books.nix (ExecStartPre w bookorbit.service).
-    "d /var/lib/bookorbit                           -    -         -     -"
-    "d /var/lib/bookorbit/plugins                   0775 bookorbit media -"
-    "d /var/lib/bookorbit/plugins/indexers          0775 bookorbit media -"
-    "d /var/lib/bookorbit/plugins/indexers/shelfmark 0775 bookorbit media -"
 
     # Pliki z hasłami (EnvironmentFile) - tylko dla roota, poza /nix/store
     "d /var/lib/secrets      0700 root       root  -"
