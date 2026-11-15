@@ -9,7 +9,7 @@
 ---------------------
 local mainMod     = "SUPER"
 local terminal    = "ghostty"
-local fileManager = "yazi"
+local fileManager = "ghostty -e yazi"
 local menu        = "launcher.sh"
 local powermenu   = "powermenu.sh"
 local browser     = "firefox"
