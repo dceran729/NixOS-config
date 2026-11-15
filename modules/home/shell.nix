@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   srw-ip = "100.95.221.38";
 
@@ -25,8 +25,17 @@ in
 {
   home.packages = [ rs rs-srw ];
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = lib.mkAfter ''
+      set -g fish_greeting
 
+      function starship_transient_prompt_func
+        starship module character
+      end
+      enable_transience
+    '';
+  };
   programs.starship = {
     enable = true;
     settings = {
