@@ -6,7 +6,7 @@
   # Główne zasady wyglądu
   stylix.image = ../../../wallpapers/a_woman_sitting_on_a_couch_looking_out_a_window.png;
   stylix.polarity = "dark";
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark-dark.yaml";
 
   # Kursor
   stylix.cursor = {
