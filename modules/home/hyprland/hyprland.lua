@@ -48,6 +48,8 @@ hl.config({
         col = {
             active_border = "rgba(00c6fcff)",
             -- inactive_border = "rgba(000000ff)",
+            nogroup_border_active = "rgba(00c6fcff)",
+            nogroup_border = "rgba(444444ff)",
         },
 
         resize_on_border = true,
@@ -319,7 +321,7 @@ hl.bind(mainMod .. " + minus", hl.dsp.layout("colresize -0.1"))
 hl.bind(mainMod .. " + equal", hl.dsp.layout("colresize +0.1"))
 
 -- Napraw układ po powiększeniu okna
-hl.bind(mainMod .. " + E",          hl.dsp.layout("fit visible"))        -- widoczne kolumny wypełniają ekran
+hl.bind(mainMod .. " + ALT + E",    hl.dsp.layout("fit visible"))        -- widoczne kolumny wypełniają ekran
 hl.bind(mainMod .. " + CTRL + E",   hl.dsp.layout("colresize all 0.5"))  -- wszystkie kolumny po 50%
 
 -- Obszary robocze 1-10 (klawisz 0 = obszar 10)
