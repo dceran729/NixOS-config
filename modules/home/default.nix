@@ -10,6 +10,7 @@
     ./zed.nix
     ./lock.nix
     ./yazi.nix
+    ./pyprland.nix
     ./hyprland
     ./waybar
     ./rofi

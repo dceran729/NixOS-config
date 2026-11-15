@@ -26,6 +26,7 @@ hl.monitor({ output = "HDMI-A-1", mode = "preferred", position = "auto", scale =
 -- exec-once = ... -> zdarzenie hyprland.start (uruchamia się tylko przy starcie)
 hl.on("hyprland.start", function()
     hl.exec_cmd("waybar & lxqt-policykit-agent")
+    hl.exec_cmd("pypr")
 end)
 
 ---------------------------
@@ -280,6 +281,8 @@ hl.bind(mainMod .. " + SHIFT + Y", hl.dsp.exec_cmd([[google-chrome-stable --app=
 -- fullscreen, 0 = pełny ekran (przykrywa też Waybara)
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("pypr toggle yazi"))
+hl.bind(mainMod .. " + grave", hl.dsp.exec_cmd("pypr toggle term"))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + W", hl.dsp.window.close())
 -- hyprctl dispatch przyjmuje teraz wyrażenie Lua
