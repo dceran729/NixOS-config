@@ -15,6 +15,7 @@
     ./walker
     ./swayosd
     ./scripts
+    ./yazi
   ];
 
   fonts.fontconfig.enable = true;
