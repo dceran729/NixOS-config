@@ -9,13 +9,13 @@
     ./ghostty.nix
     ./zed.nix
     ./lock.nix
+    ./yazi.nix
     ./hyprland
     ./waybar
     ./rofi
     ./walker
     ./swayosd
     ./scripts
-    ./yazi
   ];
 
   fonts.fontconfig.enable = true;
