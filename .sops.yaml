@@ -1,0 +1,12 @@
+keys:
+  - &admin age10m9dhscac97763zzagtd90uywq0mqy4fveyaaqva96swg7x4uymstr06h2
+  - &dcnix age1j4e2wre0humhp6y9t5xupeja3ucdemzgtentljlj5kxyksen85mqazkgd8
+  - &dcsrw age1adcp9cr428nkx02qgjgj7u9zwqxhjs0xxygp3tkd53nam848zp9qxjpml2
+
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *admin
+          - *dcnix
+          - *dcsrw

@@ -13,6 +13,11 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -23,13 +28,21 @@
         DCNIX = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/laptop/default.nix ];
+          modules = [
+            inputs.sops-nix.nixosModules.sops
+            inputs.stylix.nixosModules.stylix
+            inputs.home-manager.nixosModules.home-manager
+            ./hosts/laptop/default.nix
+          ];
         };
 
         DCSRW = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/server/default.nix ];
+          modules = [
+            inputs.sops-nix.nixosModules.sops
+            ./hosts/server/default.nix
+          ];
         };
 
       };

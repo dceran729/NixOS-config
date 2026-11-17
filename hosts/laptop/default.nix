@@ -2,9 +2,6 @@
 
 {
   imports = [
-    inputs.stylix.nixosModules.stylix
-    inputs.home-manager.nixosModules.home-manager
-
     ./hardware.nix
     ./power.nix
 
@@ -13,6 +10,7 @@
     ../../modules/nixos/services/ollama.nix
   ];
 
+  sops.age.sshKeyPaths = [];
   networking.hostName = "DCNIX";
   boot.kernelModules = [ "pkcs8_key_parser" ]; # ????????
 
