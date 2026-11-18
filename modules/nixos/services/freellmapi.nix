@@ -19,27 +19,29 @@
   '';
 
   # 3. Deklaratywna konfiguracja startowa FreeLLMAPI
-  sops.templates."freellmapi.config.json".content = builtins.toJSON {
-    owner = "1000";
-    group = "1000";
-    mode = "0400";
-    # Opcjonalne konto admina do panelu WWW (odkomentuj razem z sekretem wyżej):
-    admin = {
-      email = "d.ceran729@gmail.com";
-      password = config.sops.placeholder.freellmapi_admin_password;
-    };
+  sops.templates."freellmapi.config.json" = {
+      owner = "1000";
+      group = "1000";
+      mode = "0400";
+      content = builtins.toJSON {
+        # Opcjonalne konto admina do panelu WWW (odkomentuj razem z sekretem wyżej):
+        admin = {
+          email = "d.ceran729@gmail.com";
+          password = config.sops.placeholder.freellmapi_admin_password;
+        };
 
-    routing = {
-      strategy = "balanced";
-    };
+        routing = {
+          strategy = "balanced";
+        };
 
-    # Dopisz/odkomentuj tylko tych dostawców, których klucze masz w secrets.yaml:
-    keys = [
-      # { platform = "google"; key = config.sops.placeholder.google_api_key; label = "main"; }
-      # { platform = "groq"; key = config.sops.placeholder.groq_api_key; label = "main"; }
-      # { platform = "openrouter"; key = config.sops.placeholder.openrouter_api_key; label = "main"; }
-    ];
-  };
+        # Dopisz/odkomentuj tylko tych dostawców, których klucze masz w secrets.yaml:
+        keys = [
+          # { platform = "google"; key = config.sops.placeholder.google_api_key; label = "main"; }
+          # { platform = "groq"; key = config.sops.placeholder.groq_api_key; label = "main"; }
+          # { platform = "openrouter"; key = config.sops.placeholder.openrouter_api_key; label = "main"; }
+        ];
+      };
+    };
 
   # 4. Kontener OCI (korzysta z virtualisation.oci-containers.backend = "podman" z media.nix)
   virtualisation.oci-containers.containers.freellmapi = {
