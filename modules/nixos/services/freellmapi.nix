@@ -20,6 +20,9 @@
 
   # 3. Deklaratywna konfiguracja startowa FreeLLMAPI
   sops.templates."freellmapi.config.json".content = builtins.toJSON {
+    owner = "1000";
+    group = "1000";
+    mode = "0400";
     # Opcjonalne konto admina do panelu WWW (odkomentuj razem z sekretem wyżej):
     admin = {
       email = "d.ceran729@gmail.com";
