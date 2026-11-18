@@ -7,8 +7,9 @@
   sops.secrets.freellmapi_encryption_key = {};
   sops.secrets.freellmapi_admin_password = {};
 
-  # sops.secrets.google_api_key = {};
-  # sops.secrets.groq_api_key = {};
+  sops.secrets.google_api_key_1 = {};
+  sops.secrets.google_api_key_2 = {};
+  sops.secrets.google_api_key_3 = {};  # sops.secrets.groq_api_key = {};
   # sops.secrets.openrouter_api_key = {};
 
   # 2. Zmienne środowiskowe kontenera (generowane w RAM)
@@ -34,9 +35,9 @@
 
         # Dopisz/odkomentuj tylko tych dostawców, których klucze masz w secrets.yaml:
         keys = [
-          # { platform = "google"; key = config.sops.placeholder.google_api_key; label = "main"; }
-          # { platform = "groq"; key = config.sops.placeholder.groq_api_key; label = "main"; }
-          # { platform = "openrouter"; key = config.sops.placeholder.openrouter_api_key; label = "main"; }
+          { platform = "google"; key = config.sops.placeholder.google_api_key_1; label = "acc1"; }
+          { platform = "google"; key = config.sops.placeholder.google_api_key_2; label = "acc2"; }
+          { platform = "google"; key = config.sops.placeholder.google_api_key_3; label = "acc3"; }
         ];
       };
     };
