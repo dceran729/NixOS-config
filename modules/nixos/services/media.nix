@@ -159,6 +159,7 @@ in
           (svc { name = "Vaultwarden"; href = vaultUrl; port = 8222; icon = "vaultwarden.svg";  desc = "Hasła"; })
           (svc { name = "Uptime Kuma"; port = 3002; icon = "uptime-kuma.svg";  desc = "Monitoring"; })
           (svc { name = "AdGuard";     port = 3000; icon = "adguard-home.svg"; desc = "DNS i reklamy"; })
+          (svc { name = "FreeLLMAPI"; port = 3012; icon = "mdi-api"; desc = "Router modeli AI"; })
         ]; }
     ];
 

@@ -12,6 +12,7 @@
     ../../modules/nixos/services/qbit-cleanup.nix
     ../../modules/nixos/services/caddy.nix
     ../../modules/nixos/services/books.nix
+    ../../modules/nixos/services/freellmapi.nix
   ];
 
   networking.hostName = "DCSRW";
