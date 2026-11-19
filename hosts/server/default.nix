@@ -57,7 +57,7 @@
       enable = true;
       settings = {
         add_newline = true;
-        format = "╭─$directory$git_branch$git_status\n╰─$character";
+        format = "╭─SRW$directory$git_branch$git_status\n╰─$character";
 
         directory = {
           style = "bold blue";
