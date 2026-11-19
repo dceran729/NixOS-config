@@ -17,6 +17,7 @@
     ./walker
     ./swayosd
     ./scripts
+    ./ai
   ];
 
   fonts.fontconfig.enable = true;
