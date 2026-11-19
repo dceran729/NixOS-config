@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -41,6 +41,47 @@
     "video"
     "render"
   ];
+
+  programs.fish.interactiveShellInit = lib.mkAfter ''
+      set -g fish_greeting
+
+      if functions -q enable_transience
+        function starship_transient_prompt_func
+          starship module character
+        end
+        enable_transience
+      end
+    '';
+
+    programs.starship = {
+      enable = true;
+      settings = {
+        add_newline = true;
+        format = "╭─$directory$git_branch$git_status\n╰─$character";
+
+        directory = {
+          style = "bold blue";
+          truncation_length = 3;
+          truncation_symbol = "…/";
+        };
+
+        git_branch = {
+          symbol = "";
+          format = "[on $branch]($style) ";
+          style = "bold purple";
+        };
+
+        git_status = {
+          format = "[$all_status$ahead_behind]($style) ";
+          style = "bold yellow";
+        };
+
+        character = {
+          success_symbol = "[❯](bold green)";
+          error_symbol = "[❯](bold red)";
+        };
+      };
+    };
 
   # ---------------------------------------------------
   # INTEL QUICKSYNC (Akceleracja sprzętowa)

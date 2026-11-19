@@ -67,9 +67,9 @@ in
   };
 
   home.shellAliases = {
-    r = "git -C ~/NixOS-config add . && nh os test";
-    ssh-srw = ''ssh -t damian2120@${srw-ip} "TERM=xterm-256color bash -l"'';
-    mount-srw = "mkdir -p ~/Serwer && sshfs damian2120@${srw-ip}:/ ~/Serwer";
-    umount-srw = "fusermount -u ~/Serwer";
-  };
+      r = "git -C ~/NixOS-config add . && nh os test";
+      ssh-srw = "ssh damian2120@${srw-ip}";
+      mount-srw = "mkdir -p ~/Serwer && sshfs damian2120@${srw-ip}:/ ~/Serwer";
+      umount-srw = "fusermount -u ~/Serwer";
+    };
 }

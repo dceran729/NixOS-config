@@ -22,6 +22,7 @@
   # 3. Deklaratywna konfiguracja startowa FreeLLMAPI
   sops.templates."freellmapi.config.json" = {
       mode = "0444";
+      restartUnits = [ "podman-freellmapi.service" ];
       content = builtins.toJSON {
         # Opcjonalne konto admina do panelu WWW (odkomentuj razem z sekretem wyżej):
         admin = {
